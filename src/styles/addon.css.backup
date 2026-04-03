@@ -1,0 +1,4 @@
+.giftBtnGrid {
+    color: #ffe823;
+    font-size: 10px;
+}

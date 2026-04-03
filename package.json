@@ -1,0 +1,43 @@
+{
+  "type": "module",
+  "scripts": {
+    "validator": "pm2 start ./validator.js --name telegram_validator --log ./logs/validator.log",
+    "client": "pm2 start ./client.js --name telegram_client --log ./logs/client.log",
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.6.0",
+    "@telegram-apps/init-data-node": "^2.0.10",
+    "@tma.js/init-data-node": "^2.0.6",
+    "@ton/crypto": "^3.3.0",
+    "@tonconnect/ui": "^2.3.1",
+    "@tonconnect/ui-react": "^2.4.2",
+    "@vitejs/plugin-react": "^5.1.4",
+    "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "lottie-web": "^5.13.0",
+    "lucide-react": "^0.562.0",
+    "md5": "^2.3.0",
+    "mysql2": "^3.16.0",
+    "node-telegram-bot-api": "^0.67.0",
+    "pako": "^2.1.0",
+    "path": "^0.12.7",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+    "telegram": "^2.26.22",
+    "ton": "^13.9.0",
+    "tonweb": "^0.0.66",
+    "vite": "^7.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "vite-plugin-node-polyfills": "^0.25.0"
+  }
+}
