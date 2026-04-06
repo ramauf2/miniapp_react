@@ -1,0 +1,15 @@
+/node_modules
+/test*.js
+/package-lock.json
+/bot.js
+/imgs
+/imgs2
+/messages
+/messages2
+/dist
+/login.js
+/gifts_raw.json
+/session.json
+/*_session.json
+/config.js
+/.env
