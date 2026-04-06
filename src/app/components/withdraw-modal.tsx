@@ -4,6 +4,8 @@ import User from '../User';
 import Gifts from '../Gifts';
 import { TON_WITHDRAW_ITEM_FEE } from '../../../config';
 import {AuthData} from "../interface/AuthData.tsx";
+import { CustomDialog } from './custom-dialog';
+import { TonIcon } from './ton-icon';
 
 interface WithdrawModalProps {
     onClose: () => void;
@@ -16,6 +18,9 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
     const [gifts, setGifts] = useState<Gift[]>([]);
     const withdrawAmount = (selectedGifts.length * TON_WITHDRAW_ITEM_FEE).toFixed(1);
     const [refreshCounter, setRefreshCounter] = useState(0);
+    const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+    const [showErrorDialog, setShowErrorDialog] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         getData()
@@ -70,10 +75,11 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
     const handleWithdrawGifts = () => {
         User.withdraw(localStorage.getItem('bearerToken'), selectedGifts).then(data => {
             if (data.success) {
-                alert('Withdraw request success!');
+                setShowSuccessDialog(true);
                 getData()
             } else {
-                alert(data.data);
+                setErrorMessage(data.data || 'Ошибка при выводе');
+                setShowErrorDialog(true);
             }
         });
         setRefreshCounter(refreshCounter + 1);
@@ -135,15 +141,35 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                     <button
                         onClick={handleWithdrawGifts}
                         disabled={selectedGifts.length === 0}
-                        className={`w-full rounded-[25px] h-[55px] text-white text-[18px] font-semibold ${
+                        className={`w-full rounded-[25px] h-[55px] text-white text-[18px] font-semibold flex items-center justify-center gap-1 ${
                             selectedGifts.length === 0
                                 ? 'bg-[#515151] cursor-not-allowed'
                                 : 'bg-[#007AFF]'
                         }`}
                     >
-                        Вывести ({selectedGifts.length}) +{withdrawAmount} TON
+                        <span>Вывести ({selectedGifts.length}) +{withdrawAmount}</span>
+                        <div style={{ marginTop: '-3px' }}>
+                            <TonIcon size={20} />
+                        </div>
                     </button>
                 </div>
+
+                {/* Custom Dialogs */}
+                <CustomDialog
+                    isOpen={showSuccessDialog}
+                    title="Успешно"
+                    message="Запрос на вывод успешно отправлен!"
+                    type="alert"
+                    onConfirm={() => setShowSuccessDialog(false)}
+                />
+
+                <CustomDialog
+                    isOpen={showErrorDialog}
+                    title="Ошибка"
+                    message={errorMessage}
+                    type="alert"
+                    onConfirm={() => setShowErrorDialog(false)}
+                />
             </div>
         </>
     );

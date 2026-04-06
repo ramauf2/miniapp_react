@@ -1,6 +1,7 @@
 import {TradeHistory} from '../interface/TradeHistory';
 import {TradeData} from '../interface/TradeData';
 import {CreateTradeModal} from './create-trade-modal';
+import {getMockTradeIfNeeded} from '../mockData';
 
 const imgTrade = '/images/trade.png';
 
@@ -16,17 +17,25 @@ interface TradesHomeProps {
 
 
 export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateTrade, tradeLink, showCreateTradeModal, setShowCreateTradeModal }: TradesHomeProps) {
+    // Используем мок данные только если нет реальных
+    const displayTradeData = getMockTradeIfNeeded(tradeData);
 
     return (
         <div className="h-full flex flex-col" style={{ height: 'calc(100vh - 56px)', overflow: 'hidden' }}>
             {/* Fixed Header Section */}
             <div className="px-4 pt-4 flex-shrink-0" style={{ flexShrink: 0 }}>
-                {tradeData && tradeData.partner ? (
-                    <div className="bg-[#303030] rounded-[20px] p-4 flex items-center justify-between mb-6" style={{ borderTop: '1.5px solid rgba(255, 255, 255, 0.12)' }}>
+                {displayTradeData && displayTradeData.partner ? (
+                    <div 
+                        className="bg-[#303030] rounded-[20px] p-4 flex items-center justify-between mb-6 animate-quick-fade" 
+                        style={{ 
+                            borderTop: '1.5px solid rgba(255, 255, 255, 0.12)',
+                            animationDelay: '0s'
+                        }}
+                    >
                         <div className="flex items-center gap-2">
                             <img src="/images/trade.png" alt="trade" className="w-6 h-6" style={{ filter: 'brightness(0) saturate(100%) invert(80%)' }} />
                             <div className="w-[12px] h-[12px] rounded-full bg-[#00A61E]" />
-                            <span className="text-white text-[18px]">Trade with @{tradeData.isCreator ? tradeData.partner : tradeData.user}</span>
+                            <span className="text-white text-[18px]">Trade with @{displayTradeData.isCreator ? displayTradeData.partner : displayTradeData.user}</span>
                         </div>
                         <button
                             onClick={onOpenTrade}
@@ -40,7 +49,13 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
 
                 {/* Live Trades Header */}
                 <div className="mb-4 flex justify-center">
-                    <div style={{ borderTop: '1.5px solid rgba(255, 255, 255, 0.12)' }} className="bg-[#1A1A1A] rounded-full px-4 py-2 flex items-center gap-2 border border-[#404040] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+                    <div 
+                        style={{ 
+                            borderTop: '1.5px solid rgba(255, 255, 255, 0.12)',
+                            animationDelay: displayTradeData && displayTradeData.partner ? '0.05s' : '0s'
+                        }} 
+                        className="bg-[#1A1A1A] rounded-full px-4 py-2 flex items-center gap-2 border border-[#404040] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] animate-quick-fade"
+                    >
                         <img
                             src="/images/live.png"
                             alt="live"
@@ -71,39 +86,53 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                 }}
             >
                 <div className="space-y-4">
-                    {tradeHistory.map((trade, index) => (
-                        <div key={index} style={{ backgroundColor: '#1C1C1C', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }} className="rounded-[25px] p-3 relative">
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-[#595959] text-[15px] font-semibold">{trade.user + ' => ' + trade.partner}</span>
-                                <span className="text-[#595959] text-[15px]">{trade.created_at}</span>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                                {/* Your Gifts */}
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
-                                        {trade.user_items.map((item, index2) => (
-                                            <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
-                                        ))}
-                                    </div>
-                                    <span className="text-white text-[20px] font-semibold">{trade.user_items.length} Gifts</span>
+                    {tradeHistory.map((trade, index) => {
+                        // Рассчитываем задержку - начинаем после заголовков
+                        const baseDelay = displayTradeData && displayTradeData.partner ? 0.1 : 0.05;
+                        const delay = baseDelay + (index * 0.05);
+                        
+                        return (
+                            <div 
+                                key={index} 
+                                style={{ 
+                                    backgroundColor: '#1C1C1C', 
+                                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                                    animationDelay: `${delay}s`
+                                }} 
+                                className="rounded-[25px] p-3 relative animate-trade-card"
+                            >
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="text-[#595959] text-[15px] font-semibold">{trade.user + ' => ' + trade.partner}</span>
+                                    <span className="text-[#595959] text-[15px]">{trade.created_at}</span>
                                 </div>
 
-                                {/* Arrow */}
-                                <img src={imgTrade} alt="Trade" className="w-[39px] h-[39px] opacity-70" style={{ filter: 'brightness(0) invert(1)' }} />
+                                <div className="flex items-center justify-between">
+                                    {/* Your Gifts */}
+                                    <div className="flex items-center gap-3">
+                                        <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
+                                            {trade.user_items.map((item, index2) => (
+                                                <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
+                                            ))}
+                                        </div>
+                                        <span className="text-white text-[20px] font-semibold">{trade.user_items.length} Gifts</span>
+                                    </div>
 
-                                {/* Their Gifts */}
-                                <div className="flex items-center gap-3">
-                                    <span className="text-white text-[20px] font-semibold">{trade.partner_items.length} Gifts</span>
-                                    <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
-                                        {trade.partner_items.map((item, index2) => (
-                                            <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
-                                        ))}
+                                    {/* Arrow */}
+                                    <img src={imgTrade} alt="Trade" className="w-[39px] h-[39px] opacity-70" style={{ filter: 'brightness(0) invert(1)' }} />
+
+                                    {/* Their Gifts */}
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-white text-[20px] font-semibold">{trade.partner_items.length} Gifts</span>
+                                        <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
+                                            {trade.partner_items.map((item, index2) => (
+                                                <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
 

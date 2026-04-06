@@ -11,6 +11,11 @@ declare global {
                         username?: string;
                     };
                 };
+                ready: () => void;
+                expand: () => void;
+                enableClosingConfirmation: () => void;
+                disableVerticalSwipes?: () => void;
+                isVerticalSwipesEnabled?: boolean;
             };
         };
     }

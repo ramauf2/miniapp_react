@@ -2,17 +2,17 @@ import { Plus } from 'lucide-react';
 import {useEffect, useState} from 'react';
 import Gifts from '../Gifts';
 import Trades from '../Trades';
-import { BASE_PATH } from '../../../config';
 import { GiftSelectorModal } from './gift-selector-modal';
 import { PartnerInventoryModal } from './partner-inventory-modal';
 import {Gift} from '../interface/Gift'
 import {TradeData} from '../interface/TradeData';
 import {AuthData} from '../interface/AuthData';
 import { DeleteGiftModal } from './delete-gift-modal';
+import { CustomDialog } from './custom-dialog';
+import { TonIcon } from './ton-icon';
 import socketEvents from "../socketEvents";
 
-const imgPhoto = BASE_PATH + "/images/b40069be8827d28186f71205316130af8e40fdf6.png";
-const imgImage35 = BASE_PATH + "/images/94092276aedfc9cc35894c4b5622d96bbb2d09ba.png";
+// Removed hardcoded avatar images - now using real Telegram avatars from tradeData
 
 
 interface TradeRoomProps {
@@ -48,6 +48,12 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
     // Переключатель между своим профилем и партнером
     const [activeUser, setActiveUser] = useState<'self' | 'partner'>('self');
+
+    // Диалоги
+    const [showCancelDialog, setShowCancelDialog] = useState(false);
+    const [showAcceptDialog, setShowAcceptDialog] = useState(false);
+    const [showAlreadyAcceptedDialog, setShowAlreadyAcceptedDialog] = useState(false);
+    const [showTradeCompletedDialog, setShowTradeCompletedDialog] = useState(false);
 
 
     useEffect(() => {
@@ -146,21 +152,27 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
      * Отмена трейда (убрать галку принятия)
      */
     const handleCancelTrade = () => {
-        if (confirm('Cancel trade? Are you sure you want to cancel this trade?')) {
-            updateRequest(selfSelectedGifts);
-            goBack();
-        }
+        setShowCancelDialog(true);
+    };
+
+    const handleConfirmCancelTrade = () => {
+        setShowCancelDialog(false);
+        updateRequest(selfSelectedGifts);
+        goBack();
     };
 
     /**
      * Запрос подтверждения трейда
      */
     const handleAcceptTrade = () => {
-        if (confirm('Accept trade? After accept your gifts will be frozen.')) {
-            // Отправляем запрос с accept=true и текущим значением TON
-            updateRequest(selfSelectedGifts, true, selfTons);
-        }
-    }
+        setShowAcceptDialog(true);
+    };
+
+    const handleConfirmAcceptTrade = () => {
+        setShowAcceptDialog(false);
+        // Отправляем запрос с accept=true и текущим значением TON
+        updateRequest(selfSelectedGifts, true, selfTons);
+    };
 
     /**
      * Добавил подарок в список обмена
@@ -246,8 +258,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
             socket.emit(socketEvents.SOCKET_EVENT_TRADE_UPDATED, {code: tradeData.code, actor: authData.username});
             if (data.data && data.data.is_completed) {
-                alert('Trade successfully completed');
-                window.location.reload();
+                setShowTradeCompletedDialog(true);
             }
         }).catch(() => {
             if (!silent) {
@@ -335,7 +346,11 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                         activeUser === 'self' ? 'text-white' : 'text-[#B3B3B3]'
                                     }`}
                                 >
-                                    <img src={imgPhoto} alt="user" className="w-[24px] h-[24px] rounded-full object-cover" />
+                                    <img 
+                                        src={tradeData.isCreator ? tradeData.user_avatar : tradeData.partner_avatar} 
+                                        alt="user" 
+                                        className="w-[24px] h-[24px] rounded-full object-cover" 
+                                    />
                                     {tradeData.isCreator ? tradeData.user : tradeData.partner}
                                 </button>
                                 <button
@@ -344,11 +359,73 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                         activeUser === 'partner' ? 'text-white' : 'text-[#B3B3B3]'
                                     }`}
                                 >
-                                    <img src={imgImage35} alt="partner" className="w-[24px] h-[24px] rounded-full object-cover" />
+                                    <img 
+                                        src={tradeData.isCreator ? tradeData.partner_avatar : tradeData.user_avatar} 
+                                        alt="partner" 
+                                        className="w-[24px] h-[24px] rounded-full object-cover" 
+                                    />
                                     {tradeData.isCreator ? tradeData.partner : tradeData.user}
                                 </button>
                             </div>
                         </div>
+
+                        {/* Partner View Toggle - показываем только когда активен партнер */}
+                        {activeUser === 'partner' && (
+                            <div className="mb-4">
+                                <div
+                                    className="relative bg-[#505050] rounded-[25px] p-1"
+                                    style={{
+                                        boxShadow: `
+                                    -0.8px 0 0 0 rgba(180, 180, 180, 0.35),
+                                    -0.8px -0.3px 0 0 rgba(180, 180, 180, 0.3),
+                                    -1.2px -0.6px 0 0 rgba(180, 180, 180, 0.2),
+                                    0.8px 0 0 0 rgba(180, 180, 180, 0.35),
+                                    0.8px 0.3px 0 0 rgba(180, 180, 180, 0.3),
+                                    1.2px 0.6px 0 0 rgba(180, 180, 180, 0.2)
+                                `
+                                    }}
+                                >
+                                    {/* Sliding Background */}
+                                    <div
+                                        className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#3A3A3A] rounded-[22px] transition-all duration-300 ease-in-out shadow-lg"
+                                        style={{
+                                            left: partnerView === 'trade' ? '4px' : 'calc(50% + 0px)',
+                                            boxShadow: `
+                                        -0.8px 0 0 0 rgba(200, 200, 200, 0.4),
+                                        -0.8px -0.3px 0 0 rgba(200, 200, 200, 0.35),
+                                        -1.2px -0.6px 0 0 rgba(200, 200, 200, 0.25),
+                                        0.8px 0 0 0 rgba(200, 200, 200, 0.4),
+                                        0.8px 0.3px 0 0 rgba(200, 200, 200, 0.35),
+                                        1.2px 0.6px 0 0 rgba(200, 200, 200, 0.25)
+                                    `
+                                        }}
+                                    />
+
+                                    {/* Buttons */}
+                                    <div className="relative flex">
+                                        <button
+                                            onClick={() => setPartnerView('trade')}
+                                            className={`flex-1 h-[44px] rounded-[22px] text-[16px] font-semibold transition-colors duration-300 z-10 ${
+                                                partnerView === 'trade' ? 'text-white' : 'text-[#B3B3B3]'
+                                            }`}
+                                        >
+                                            In Trade
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setPartnerView('inventory');
+                                                setIsPartnerInventoryModalOpen(true);
+                                            }}
+                                            className={`flex-1 h-[44px] rounded-[22px] text-[16px] font-semibold transition-colors duration-300 z-10 ${
+                                                partnerView === 'inventory' ? 'text-white' : 'text-[#B3B3B3]'
+                                            }`}
+                                        >
+                                            Inventory
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         {/* Gift Grid */}
                         <div className="grid grid-cols-3 gap-3 mb-4">
@@ -359,7 +436,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                             key={gift.id || index}
                                             onClick={() => {
                                                 if (isSelfAccepted) {
-                                                    alert('Вы уже приняли трейд, нельзя удалять подарки');
+                                                    setShowAlreadyAcceptedDialog(true);
                                                     return;
                                                 }
                                                 setGiftToDelete(gift);
@@ -468,8 +545,12 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
                         {/* TON Amount */}
                         <div>
-                            <p className="text-[#999] text-[15px] mb-2">
-                                {activeUser === 'self' ? 'Add TON to trade' : 'Partner TON amount'}
+                            <p className="text-[#999] text-[15px] mb-2 flex items-center gap-1">
+                                {activeUser === 'self' ? (
+                                    <>Добавить <TonIcon size={14} /> в обмен</>
+                                ) : (
+                                    <>Сумма <TonIcon size={14} /> партнера</>
+                                )}
                             </p>
                             <div className="bg-[#1C1C1E] border-2 border-[#595959] rounded-[15px] h-[53px] px-4 flex items-center justify-between transition-colors mb-2">
                                 {activeUser === 'self' ? (
@@ -490,67 +571,9 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                 ) : (
                                     <span className="text-white text-[20px]">{partnerTons}</span>
                                 )}
-                                <span className="text-[#999] text-[16px] ml-2">TON</span>
+                                <TonIcon size={16} className="ml-2" />
                             </div>
                         </div>
-
-                        {/* Partner View Toggle - показываем только когда активен партнер */}
-                        {activeUser === 'partner' && (
-                            <div className="mt-3">
-                                <div
-                                    className="relative bg-[#505050] rounded-[25px] p-1"
-                                    style={{
-                                        boxShadow: `
-                                    -0.8px 0 0 0 rgba(180, 180, 180, 0.35),
-                                    -0.8px -0.3px 0 0 rgba(180, 180, 180, 0.3),
-                                    -1.2px -0.6px 0 0 rgba(180, 180, 180, 0.2),
-                                    0.8px 0 0 0 rgba(180, 180, 180, 0.35),
-                                    0.8px 0.3px 0 0 rgba(180, 180, 180, 0.3),
-                                    1.2px 0.6px 0 0 rgba(180, 180, 180, 0.2)
-                                `
-                                    }}
-                                >
-                                    {/* Sliding Background */}
-                                    <div
-                                        className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#3A3A3A] rounded-[22px] transition-all duration-300 ease-in-out shadow-lg"
-                                        style={{
-                                            left: partnerView === 'trade' ? '4px' : 'calc(50% + 0px)',
-                                            boxShadow: `
-                                        -0.8px 0 0 0 rgba(200, 200, 200, 0.4),
-                                        -0.8px -0.3px 0 0 rgba(200, 200, 200, 0.35),
-                                        -1.2px -0.6px 0 0 rgba(200, 200, 200, 0.25),
-                                        0.8px 0 0 0 rgba(200, 200, 200, 0.4),
-                                        0.8px 0.3px 0 0 rgba(200, 200, 200, 0.35),
-                                        1.2px 0.6px 0 0 rgba(200, 200, 200, 0.25)
-                                    `
-                                        }}
-                                    />
-
-                                    {/* Buttons */}
-                                    <div className="relative flex">
-                                        <button
-                                            onClick={() => setPartnerView('trade')}
-                                            className={`flex-1 h-[44px] rounded-[22px] text-[16px] font-semibold transition-colors duration-300 z-10 ${
-                                                partnerView === 'trade' ? 'text-white' : 'text-[#B3B3B3]'
-                                            }`}
-                                        >
-                                            In Trade
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setPartnerView('inventory');
-                                                setIsPartnerInventoryModalOpen(true);
-                                            }}
-                                            className={`flex-1 h-[44px] rounded-[22px] text-[16px] font-semibold transition-colors duration-300 z-10 ${
-                                                partnerView === 'inventory' ? 'text-white' : 'text-[#B3B3B3]'
-                                            }`}
-                                        >
-                                            Inventory
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     {/* Accept Trade Button */}
@@ -620,6 +643,45 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                             setGiftToDelete(null);
                         }}
                         onConfirm={handleConfirmDelete}
+                    />
+
+                    {/* Custom Dialogs */}
+                    <CustomDialog
+                        isOpen={showCancelDialog}
+                        title="Отменить обмен?"
+                        message="Вы уверены, что хотите отменить этот обмен?"
+                        type="confirm"
+                        confirmText="Отменить"
+                        cancelText="Назад"
+                        onConfirm={handleConfirmCancelTrade}
+                        onCancel={() => setShowCancelDialog(false)}
+                    />
+
+                    <CustomDialog
+                        isOpen={showAcceptDialog}
+                        title="Принять обмен?"
+                        message="После принятия ваши подарки будут заморожены"
+                        type="confirm"
+                        confirmText="Принять"
+                        cancelText="Отмена"
+                        onConfirm={handleConfirmAcceptTrade}
+                        onCancel={() => setShowAcceptDialog(false)}
+                    />
+
+                    <CustomDialog
+                        isOpen={showAlreadyAcceptedDialog}
+                        title="Обмен уже принят"
+                        message="Вы уже приняли обмен, нельзя удалять подарки"
+                        type="alert"
+                        onConfirm={() => setShowAlreadyAcceptedDialog(false)}
+                    />
+
+                    <CustomDialog
+                        isOpen={showTradeCompletedDialog}
+                        title="Обмен завершен"
+                        message="Обмен успешно завершен"
+                        type="alert"
+                        onConfirm={() => window.location.reload()}
                     />
                 </div>
             </div>

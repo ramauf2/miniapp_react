@@ -54,7 +54,7 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
         <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center pb-4 px-4">
             <div
                 ref={containerRef}
-                className="rounded-full h-[80px] flex items-center justify-between px-6 py-2"
+                className="rounded-full h-[70px] flex items-center justify-between px-6"
                 style={{
                     width: '100%',
                     maxWidth: '390px',

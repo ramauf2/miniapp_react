@@ -2,6 +2,8 @@ import { useState } from 'react';
 import User from '../User';
 import { TON_WALLET } from '../../../config';
 import {TonConnectUI} from "@tonconnect/ui";
+import { CustomDialog } from './custom-dialog';
+import { TonIcon } from './ton-icon';
 
 interface BalanceTonProps {
     ui: TonConnectUI;
@@ -14,6 +16,10 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
     const [amountDeposit, setAmountDeposit] = useState('');
     const [amountWithdraw, setAmountWithdraw] = useState('');
     const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
+    const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+    const [showErrorDialog, setShowErrorDialog] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    
     const handleDepositTon = () => {
         ui.sendTransaction({
             validUntil: Math.floor(Date.now() / 1000) + 300,
@@ -31,9 +37,10 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
         }
         User.withdraw(localStorage.getItem('bearerToken'), [], amountWithdraw, ui.account.address).then(data => {
             if (data.success) {
-                alert('Withdraw request success!');
+                setShowSuccessDialog(true);
             } else {
-                alert(data.data);
+                setErrorMessage(data.data || 'Ошибка при выводе');
+                setShowErrorDialog(true);
             }
         });
     }
@@ -120,7 +127,12 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
 
                             <div className="flex items-center justify-between bg-[#1C1C1E] rounded-[12px] p-3">
                                 <span className="text-[#999] text-[14px]">Баланс в кошельке</span>
-                                <span className="text-[#007AFF] text-[16px] font-semibold">{blockhainBalance} TON</span>
+                                <div className="flex items-center gap-1">
+                                    <span className="text-[#007AFF] text-[16px] font-semibold">{blockhainBalance}</span>
+                                    <div style={{ marginTop: '-2px' }}>
+                                        <TonIcon size={16} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -165,7 +177,12 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
 
                             <div className="flex items-center justify-between bg-[#1C1C1E] rounded-[12px] p-3">
                                 <span className="text-[#999] text-[14px]">Баланс в системе</span>
-                                <span className="text-[#007AFF] text-[16px] font-semibold">{localBalance} TON</span>
+                                <div className="flex items-center gap-1">
+                                    <span className="text-[#007AFF] text-[16px] font-semibold">{localBalance}</span>
+                                    <div style={{ marginTop: '-2px' }}>
+                                        <TonIcon size={16} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -192,6 +209,23 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                         </div>
                     </>
                 )}
+
+                {/* Custom Dialogs */}
+                <CustomDialog
+                    isOpen={showSuccessDialog}
+                    title="Успешно"
+                    message="Запрос на вывод успешно отправлен!"
+                    type="alert"
+                    onConfirm={() => setShowSuccessDialog(false)}
+                />
+
+                <CustomDialog
+                    isOpen={showErrorDialog}
+                    title="Ошибка"
+                    message={errorMessage}
+                    type="alert"
+                    onConfirm={() => setShowErrorDialog(false)}
+                />
             </div>
         </>
     );

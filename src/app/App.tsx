@@ -8,11 +8,14 @@ import { MyGifts } from './components/my-gifts';
 import { Profile } from './components/profile';
 import { Referrals } from './components/referrals';
 import { ConfirmModal } from './components/confirm-modal';
+import { CustomDialog } from './components/custom-dialog';
+import { TonIcon } from './components/ton-icon';
 import { TonConnectUI } from '@tonconnect/ui';
 import io, { Socket } from 'socket.io-client';
 import User from './User';
 import Trades from './Trades';
 import { BASE_PATH, VALIDATOR_PORT, BOT_NAME, OWNER_USERNAME } from '../../config';
+import { getMockTradeIfNeeded } from './mockData';
 
 //declare const TonConnectUI: any;
 declare const TonWeb: any;
@@ -20,8 +23,6 @@ import {TradeData} from './interface/TradeData';
 import {AuthData} from './interface/AuthData';
 import {TradeHistory} from "./interface/TradeHistory";
 import socketEvents from "./socketEvents";
-
-const imgTon = BASE_PATH + '/images/0f03721c33b25de8d692af2c66e047e7e8b9cde7.png';
 
 export type Tab = 'trades' | 'gifts' | 'profile';
 export type Screen = 'home' | 'trade-link' | 'trade-room' | 'referrals' | 'balance-ton';
@@ -44,6 +45,7 @@ export default function App() {
         message: string;
         onConfirm: () => void;
     } | null>(null);
+    const [showTradeCompletedDialog, setShowTradeCompletedDialog] = useState(false);
 
     const socketRef = useRef<Socket | null>(null);
     const authRef = useRef<AuthData | null>(null);
@@ -56,6 +58,21 @@ export default function App() {
     useEffect(() => {
         tradeRef.current = tradeData;
     }, [tradeData]);
+
+    // Initialize Telegram WebApp fullscreen mode
+    useEffect(() => {
+        if (window.Telegram?.WebApp) {
+            const tg = window.Telegram.WebApp as any;
+            tg.ready();
+            tg.expand();
+            tg.enableClosingConfirmation();
+            
+            // Disable vertical swipes if available
+            if (typeof tg.disableVerticalSwipes === 'function') {
+                tg.disableVerticalSwipes();
+            }
+        }
+    }, []);
 
     useEffect(() => {
         if (!ui) {
@@ -260,8 +277,7 @@ export default function App() {
         return Trades.info(authRef.current!.bearerToken, code).then((data: any) => {
             if (data.success) {
                 if (data.data.is_completed) {
-                    alert('Trade successfully completed');
-                    window.location.reload();
+                    setShowTradeCompletedDialog(true);
                 }
                 console.log('requestTradeInfo', data.data);
                 setTradeData(data.data);
@@ -322,15 +338,20 @@ export default function App() {
                 );
             }
 
-            if (currentScreen === 'trade-room' && authData && tradeData) {
-                return (
-                    <TradeRoom
-                        socket={socketRef.current}
-                        authData={authData}
-                        tradeData={tradeData}
-                        goBack={handleBackToTrades}
-                    />
-                );
+            if (currentScreen === 'trade-room' && authData) {
+                // Используем мок данные только если нет реальных
+                const displayTradeData = getMockTradeIfNeeded(tradeData);
+                
+                if (displayTradeData) {
+                    return (
+                        <TradeRoom
+                            socket={socketRef.current}
+                            authData={authData}
+                            tradeData={displayTradeData}
+                            goBack={handleBackToTrades}
+                        />
+                    );
+                }
             }
 
             return (
@@ -377,7 +398,7 @@ export default function App() {
                                 `
                             }}
                         >
-                            <img src={imgTon} alt="TON" className="w-[18px] h-[18px]" />
+                            <TonIcon size={18} />
                             <span className="text-white text-[18px] font-semibold">{localBalance}</span>
                             <button
                                 onClick={handleOpenBalanceTon}
@@ -453,6 +474,15 @@ export default function App() {
                     </div>
                 </>
             )}
+
+            {/* Custom Dialog */}
+            <CustomDialog
+                isOpen={showTradeCompletedDialog}
+                title="Обмен завершен"
+                message="Обмен успешно завершен"
+                type="alert"
+                onConfirm={() => window.location.reload()}
+            />
         </div>
     );
 }

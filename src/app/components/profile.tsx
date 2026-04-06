@@ -4,6 +4,7 @@ import Trades from '../Trades';
 import {TradeHistory} from '../interface/TradeHistory';
 import { ReferralsModal } from './referrals-modal';
 import {AuthData} from "../interface/AuthData.tsx";
+import { TonIcon } from './ton-icon';
 
 interface Stats{
     itemsCount: number,
@@ -26,19 +27,21 @@ export function Profile({ authData }: ProfileProps) {
     useEffect(() => {
         if (isHistoryLoaded) return;
         Trades.getUserHistory(authData['bearerToken']).then(data => {
-            if (data.success) {
+            if (data.success && data.data.data && data.data.data.length > 0) {
                 if (!data.data.data.isCreator) {
                     const userItems = data.data.data.user_items;
                     data.data.data.user_items = data.data.data.partner_items;
                     data.data.data.user_items = userItems;
                 }
                 setTradeHistory(data.data.data);
-                setIsHistoryLoaded(true);
                 setStats({
                     itemsCount: data.data.total,
                     tradeAmount: 0,
                 })
             }
+            setIsHistoryLoaded(true);
+        }).catch(() => {
+            setIsHistoryLoaded(true);
         })
     }, [isHistoryLoaded]);
 
@@ -56,7 +59,12 @@ export function Profile({ authData }: ProfileProps) {
 
             <div className="flex items-center justify-center gap-8 mb-8 animate-fade-in" style={{ animationDelay: '0.05s' }}>
                 <div className="text-center">
-                    <p className="text-white text-[24px] font-semibold">{stats.tradeAmount} TON</p>
+                    <div className="flex items-center justify-center gap-1">
+                        <p className="text-white text-[24px] font-semibold">{stats.tradeAmount}</p>
+                        <div style={{ marginTop: '2px' }}>
+                            <TonIcon size={24} />
+                        </div>
+                    </div>
                     <p className="text-[#999] text-[14px]">Trade Volume</p>
                 </div>
                 <div className="w-[1px] h-[40px] bg-[#595959]" />
@@ -86,8 +94,8 @@ export function Profile({ authData }: ProfileProps) {
                 </div>
             </div>
 
-            <div className="overflow-y-auto scrollbar-hide" style={{ height: '250px', paddingBottom: '20px' }}>
-                <div className="space-y-4">
+            <div className="overflow-y-auto scrollbar-hide" style={{ height: 'calc(100vh - 56px - 140px - 60px - 100px - 60px)', paddingBottom: '250px' }}>
+                <div className="space-y-4 pb-4">
                     {tradeHistory.map((trade, index) => (
                         <div
                             key={index}
