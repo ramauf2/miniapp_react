@@ -6,6 +6,7 @@ import { TON_WITHDRAW_ITEM_FEE } from '../../../config';
 import {AuthData} from "../interface/AuthData.tsx";
 import { CustomDialog } from './custom-dialog';
 import { TonIcon } from './ton-icon';
+import {Player} from "@lottiefiles/react-lottie-player";
 
 interface WithdrawModalProps {
     onClose: () => void;
@@ -121,11 +122,11 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                                     className="w-6 h-6 flex-shrink-0 ml-1"
                                     style={{ filter: 'brightness(0) saturate(100%) invert(38%) sepia(98%) saturate(2618%) hue-rotate(200deg) brightness(102%) contrast(101%)' }}
                                 />
-
-                                <img
+                                <Player
+                                    autoplay={true}
+                                    loop={true}
                                     src={gift.img}
-                                    alt={gift.title}
-                                    className="w-[60px] h-[60px] rounded-[10px] object-cover"
+                                    style={{ width: `100px`, height: `100px` }}
                                 />
 
                                 <div className="flex-1">

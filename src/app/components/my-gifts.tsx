@@ -7,6 +7,7 @@ import { CollectionFilterModal } from './collection-filter-modal';
 import { Gift } from '../interface/Gift';
 import Gifts from '../Gifts';
 import lottie from 'lottie-web';
+import {Player} from "@lottiefiles/react-lottie-player";
 
 interface MyGiftsProps {
     onAddGifts: () => void;
@@ -72,6 +73,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                 giftsList.push({
                     id: gift.id,
                     title: gift.title,
+                    num: gift.num,
                     img: gift.img,
                     status: gift.status,
                     collection: gift.collection,
@@ -197,8 +199,13 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                                     animationDelay: `${index * 0.025}s`
                                 }}
                             >
-                                <img src={gift.img} alt={gift.title} className="w-full aspect-square rounded-[12px] object-cover mb-2" />
-                                <h3 className="text-white text-[16px] font-medium mb-1">{gift.title}</h3>
+                                <Player
+                                    autoplay={true}
+                                    loop={true}
+                                    src={gift.img}
+                                    style={{ width: `100px`, height: `100px` }}
+                                />
+                                <h3 className="text-white text-[16px] font-medium mb-1">{gift.title} {gift.num}</h3>
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <p className="text-[#999] text-[12px]">{gift.attributes2.model.name}</p>
@@ -222,12 +229,14 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                                     animationDelay: `${index * 0.03}s`
                                 }}
                             >
-                                <img src={gift.img} alt={gift.title} className="w-[80px] h-[80px] rounded-[12px] object-cover" />
+                                <Player
+                                    autoplay={true}
+                                    loop={true}
+                                    src={gift.img}
+                                    style={{ width: `100px`, height: `100px` }}
+                                />
                                 <div className="flex-1">
-                                    <h3 className="text-white text-[18px] font-medium">{gift.title}</h3>
-                                    <p className="text-[#999] text-[14px]">{gift.attributes2.model.name}  {gift.attributes2.model.rarity} </p>
-                                    <p className="text-[#999] text-[14px]">{gift.attributes2.pattern.name}  {gift.attributes2.pattern.rarity} </p>
-                                    <p className="text-[#999] text-[14px]">{gift.attributes2.backdrop.name}  {gift.attributes2.backdrop.rarity} </p>
+                                    <h3 className="text-white text-[18px] font-medium">{gift.title} {gift.num}</h3>
                                 </div>
                                 <div className="text-right">
                                     <p className="text-white text-[18px] font-semibold">{gift.price} TON</p>

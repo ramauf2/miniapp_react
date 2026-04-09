@@ -10,6 +10,7 @@ export interface Attribute2 {
 export interface Gift {
     id: number,
     title: string,
+    num: string,
     img: string,
     status: string,
     collection: string,
