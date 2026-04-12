@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {Gift} from '../interface/Gift'
+import {Player} from "@lottiefiles/react-lottie-player";
 
 interface GiftSelectorModalProps {
     availableGifts: Gift[],
@@ -70,15 +71,21 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift }
                                 />
 
                                 {/* Gift Image */}
-                                <img
+                                <Player
+                                    autoplay={true}
+                                    loop={true}
                                     src={gift.img}
-                                    alt={gift.title}
-                                    className="w-[60px] h-[60px] rounded-[10px] object-cover"
+                                    style={{
+                                        width: '60px',
+                                        height: '60px',
+                                        objectFit: 'cover',
+                                        pointerEvents: 'none'
+                                    }}
                                 />
 
                                 {/* Gift Info */}
                                 <div className="flex-1">
-                                    <h3 className="text-white text-[16px] font-medium">{gift.title}</h3>
+                                    <h3 className="text-white text-[16px] font-medium">{gift.title} {gift.num}</h3>
                                     <p className="text-[#999] text-[12px]">{gift.id}</p>
                                 </div>
                             </div>

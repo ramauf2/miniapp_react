@@ -1,4 +1,5 @@
 import {Gift} from '../interface/Gift'
+import {Player} from "@lottiefiles/react-lottie-player";
 
 interface PartnerInventoryModalProps {
     partnerGifts: Gift[];
@@ -45,10 +46,16 @@ export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onC
                                 />
 
                                 {/* Gift Image */}
-                                <img
+                                <Player
+                                    autoplay={true}
+                                    loop={true}
                                     src={gift.img}
-                                    alt={gift.title}
-                                    className="w-[60px] h-[60px] rounded-[10px] object-cover"
+                                    style={{
+                                        width: '60px',
+                                        height: '60px',
+                                        objectFit: 'cover',
+                                        pointerEvents: 'none'
+                                    }}
                                 />
 
                                 {/* Gift Info */}

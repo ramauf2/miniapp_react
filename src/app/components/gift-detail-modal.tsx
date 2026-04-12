@@ -1,7 +1,10 @@
+import {Player} from "@lottiefiles/react-lottie-player";
+
 interface GiftDetailModalProps {
     gift: {
         id: string;
         title: string;
+        num: string;
         img: string;
         attributes2: {
             model: { name: string; rarity: string };
@@ -25,10 +28,20 @@ export function GiftDetailModal({ gift, onClose }: GiftDetailModalProps) {
                 {/* Gift Image and Title */}
                 <div className="flex flex-col items-center mb-6">
                     <div className="w-[160px] h-[160px] rounded-[30px] overflow-hidden mb-4 relative">
-                        <img src={gift.img} alt={gift.title} className="w-full h-full object-cover" />
+                        <Player
+                            autoplay={true}
+                            loop={true}
+                            src={gift.img}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                pointerEvents: 'none'
+                            }}
+                        />
                         {/* Overlay with title and ID */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
-                            <h2 className="text-white text-[18px] font-semibold text-center">{gift.title}</h2>
+                            <h2 className="text-white text-[18px] font-semibold text-center">{gift.title} {gift.num}</h2>
                             <p className="text-white text-[14px] text-center">#{gift.id}</p>
                         </div>
                     </div>

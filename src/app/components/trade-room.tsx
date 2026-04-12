@@ -11,6 +11,7 @@ import { DeleteGiftModal } from './delete-gift-modal';
 import { CustomDialog } from './custom-dialog';
 import { TonIcon } from './ton-icon';
 import socketEvents from "../socketEvents";
+import {Player} from "@lottiefiles/react-lottie-player";
 
 // Removed hardcoded avatar images - now using real Telegram avatars from tradeData
 
@@ -157,8 +158,9 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
     const handleConfirmCancelTrade = () => {
         setShowCancelDialog(false);
-        updateRequest(selfSelectedGifts);
+        updateRequest([], false, '0', false, true);
         goBack();
+        //window.location.reload();
     };
 
     /**
@@ -226,15 +228,17 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
         socket.emit(socketEvents.SOCKET_EVENT_TRADE_UPDATED, {code: tradeData.code, actor: authData.username});
     };
 
+
     /**
      * Запрос на обновление торгового предложения
      *
-     * @param gifts
-     * @param accept
+     * @param gifts - список ИД подарков
+     * @param accept - 1 - принял / 0 - не принял
      * @param tons - опциональный параметр для передачи конкретного значения TON
      * @param silent - не показывать ошибки (для мок режима)
+     * @param reloadPage - надо ли обновлять страницу после выполнения операций
      */
-    const updateRequest = (gifts: Array<any>, accept: boolean = false, tons?: string, silent: boolean = false) => {
+    const updateRequest = (gifts: Array<any>, accept: boolean = false, tons?: string, silent: boolean = false, reloadPage: boolean = false) => {
         const giftIds = [];
         for (let gift of gifts) {
             giftIds.push(gift.id);
@@ -259,6 +263,11 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
             socket.emit(socketEvents.SOCKET_EVENT_TRADE_UPDATED, {code: tradeData.code, actor: authData.username});
             if (data.data && data.data.is_completed) {
                 setShowTradeCompletedDialog(true);
+            }
+            if (reloadPage) {
+                setTimeout(function() {
+                    window.location.reload();
+                }, 500);
             }
         }).catch(() => {
             if (!silent) {
@@ -346,10 +355,10 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                         activeUser === 'self' ? 'text-white' : 'text-[#B3B3B3]'
                                     }`}
                                 >
-                                    <img 
-                                        src={tradeData.isCreator ? tradeData.user_avatar : tradeData.partner_avatar} 
-                                        alt="user" 
-                                        className="w-[24px] h-[24px] rounded-full object-cover" 
+                                    <img
+                                        src={tradeData.isCreator ? tradeData.user_avatar : tradeData.partner_avatar}
+                                        alt="user"
+                                        className="w-[24px] h-[24px] rounded-full object-cover"
                                     />
                                     {tradeData.isCreator ? tradeData.user : tradeData.partner}
                                 </button>
@@ -359,10 +368,10 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                         activeUser === 'partner' ? 'text-white' : 'text-[#B3B3B3]'
                                     }`}
                                 >
-                                    <img 
-                                        src={tradeData.isCreator ? tradeData.partner_avatar : tradeData.user_avatar} 
-                                        alt="partner" 
-                                        className="w-[24px] h-[24px] rounded-full object-cover" 
+                                    <img
+                                        src={tradeData.isCreator ? tradeData.partner_avatar : tradeData.user_avatar}
+                                        alt="partner"
+                                        className="w-[24px] h-[24px] rounded-full object-cover"
                                     />
                                     {tradeData.isCreator ? tradeData.partner : tradeData.user}
                                 </button>
@@ -444,14 +453,15 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                             }}
                                             className="aspect-square rounded-[15px] cursor-pointer overflow-hidden relative"
                                         >
-                                            <img
+                                            <Player
+                                                autoplay={true}
+                                                loop={true}
                                                 src={gift.img}
-                                                alt={gift.title}
                                                 style={{
                                                     width: '100%',
                                                     height: '100%',
                                                     objectFit: 'cover',
-                                                    pointerEvents: 'none'
+                                                    pointerEvents: 'none',
                                                 }}
                                             />
                                             <div
@@ -501,13 +511,14 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                             key={index}
                                             className="aspect-square rounded-[15px] overflow-hidden relative"
                                         >
-                                            <img
+                                            <Player
+                                                autoplay={true}
+                                                loop={true}
                                                 src={gift.img}
-                                                alt={gift.title}
                                                 style={{
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    objectFit: 'cover'
+                                                    width: `100px`,
+                                                    height: `100px`,
+                                                    objectFit: 'cover',
                                                 }}
                                             />
                                             <div
@@ -545,13 +556,13 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
                         {/* TON Amount */}
                         <div>
-                            <p className="text-[#999] text-[15px] mb-2 flex items-center gap-1">
+                            <div className="text-[#999] text-[15px] mb-2 flex items-center gap-1">
                                 {activeUser === 'self' ? (
                                     <>Добавить <TonIcon size={14} /> в обмен</>
                                 ) : (
                                     <>Сумма <TonIcon size={14} /> партнера</>
                                 )}
-                            </p>
+                            </div>
                             <div className="bg-[#1C1C1E] border-2 border-[#595959] rounded-[15px] h-[53px] px-4 flex items-center justify-between transition-colors mb-2">
                                 {activeUser === 'self' ? (
                                     <input
