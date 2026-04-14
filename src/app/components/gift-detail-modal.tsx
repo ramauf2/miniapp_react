@@ -1,5 +1,6 @@
 import {Player} from "@lottiefiles/react-lottie-player";
-
+// @ts-ignore
+import translates from '../../../translates';
 interface GiftDetailModalProps {
     gift: {
         id: string;
@@ -17,7 +18,9 @@ interface GiftDetailModalProps {
 
 export function GiftDetailModal({ gift, onClose }: GiftDetailModalProps) {
     if (!gift) return null;
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
 
+    // @ts-ignore
     return (
         <>
             {/* Backdrop */}
@@ -41,7 +44,7 @@ export function GiftDetailModal({ gift, onClose }: GiftDetailModalProps) {
                         />
                         {/* Overlay with title and ID */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
-                            <h2 className="text-white text-[18px] font-semibold text-center">{gift.title} {gift.num}</h2>
+                            <h2 className="text-white text-[18px] font-semibold text-center">{gift.title} #{gift.num}</h2>
                             <p className="text-white text-[14px] text-center">#{gift.id}</p>
                         </div>
                     </div>
@@ -51,7 +54,7 @@ export function GiftDetailModal({ gift, onClose }: GiftDetailModalProps) {
                 <div style={{ backgroundColor: '#2F2F2F' }} className="rounded-[20px] p-4">
                     {/* Model */}
                     <div className="flex items-center justify-between mb-3 pb-3" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                        <span className="text-[#999] text-[16px]">Model</span>
+                        <span className="text-[#999] text-[16px]">{lang.gift_detail.model}</span>
                         <div className="text-right">
                             <p className="text-[#007AFF] text-[16px] font-medium">{gift.attributes2.model.name}</p>
                             <p className="text-[#999] text-[14px]">{gift.attributes2.model.rarity}</p>
@@ -60,7 +63,7 @@ export function GiftDetailModal({ gift, onClose }: GiftDetailModalProps) {
 
                     {/* Pattern */}
                     <div className="flex items-center justify-between mb-3 pb-3" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                        <span className="text-[#999] text-[16px]">Symbol</span>
+                        <span className="text-[#999] text-[16px]">{lang.gift_detail.symbol}</span>
                         <div className="text-right">
                             <p className="text-[#007AFF] text-[16px] font-medium">{gift.attributes2.pattern.name}</p>
                             <p className="text-[#999] text-[14px]">{gift.attributes2.pattern.rarity}</p>
@@ -69,7 +72,7 @@ export function GiftDetailModal({ gift, onClose }: GiftDetailModalProps) {
 
                     {/* Backdrop */}
                     <div className="flex items-center justify-between">
-                        <span className="text-[#999] text-[16px]">Backdrop</span>
+                        <span className="text-[#999] text-[16px]">{lang.gift_detail.backdrop}</span>
                         <div className="text-right">
                             <p className="text-[#007AFF] text-[16px] font-medium">{gift.attributes2.backdrop.name}</p>
                             <p className="text-[#999] text-[14px]">{gift.attributes2.backdrop.rarity}</p>

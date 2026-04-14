@@ -1,5 +1,7 @@
 import {Gift} from '../interface/Gift'
 import {Player} from "@lottiefiles/react-lottie-player";
+// @ts-ignore
+import translates from '../../../translates';
 
 interface PartnerInventoryModalProps {
     partnerGifts: Gift[];
@@ -10,6 +12,7 @@ interface PartnerInventoryModalProps {
 
 export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onClose }: PartnerInventoryModalProps) {
     if (!isOpen) return null;
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
 
     // Проверяем, добавлен ли подарок в трейд
     const isGiftSelected = (giftId: string | number) => {
@@ -25,7 +28,7 @@ export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onC
             <div className="fixed bottom-0 left-0 right-0 bg-[#1C1C1E] rounded-t-[30px] p-6 z-50 animate-slide-up max-w-[390px] mx-auto" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', maxHeight: '80vh' }}>
                 <div className="text-center mb-6">
                     <p className="text-white text-[16px] leading-relaxed mb-4">
-                        Инвентарь партнера
+                        {lang.partner_inventory.title}
                     </p>
                 </div>
 
@@ -75,7 +78,7 @@ export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onC
                         className="w-full rounded-[25px] h-[55px] text-white text-[18px] font-semibold pointer-events-auto"
                         style={{ backgroundColor: 'rgb(47, 47, 47)' }}
                     >
-                        Закрыть
+                        {lang.partner_inventory.close_button}
                     </button>
                 </div>
             </div>

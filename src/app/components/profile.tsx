@@ -5,6 +5,8 @@ import {TradeHistory} from '../interface/TradeHistory';
 import { ReferralsModal } from './referrals-modal';
 import {AuthData} from "../interface/AuthData.tsx";
 import { TonIcon } from './ton-icon';
+// @ts-ignore
+import translates from '../../../translates';
 
 interface Stats{
     itemsCount: number,
@@ -16,6 +18,7 @@ interface ProfileProps {
 }
 
 export function Profile({ authData }: ProfileProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false);
     const [tradeHistory, setTradeHistory] = useState<TradeHistory[]>([]);
     const [showReferralsModal, setShowReferralsModal] = useState(false);
@@ -65,12 +68,12 @@ export function Profile({ authData }: ProfileProps) {
                             <TonIcon size={24} />
                         </div>
                     </div>
-                    <p className="text-[#999] text-[14px]">Trade Volume</p>
+                    <p className="text-[#999] text-[14px]">{lang.profile.trade_volume}</p>
                 </div>
                 <div className="w-[1px] h-[40px] bg-[#595959]" />
                 <div className="text-center">
                     <p className="text-white text-[24px] font-semibold">{stats.itemsCount}</p>
-                    <p className="text-[#999] text-[14px]">Trades</p>
+                    <p className="text-[#999] text-[14px]">{lang.profile.trades}</p>
                 </div>
             </div>
 
@@ -81,8 +84,8 @@ export function Profile({ authData }: ProfileProps) {
                 className="w-full rounded-[20px] p-5 flex items-center justify-between mb-8 hover:brightness-110 transition-all animate-fade-in"
             >
                 <div className="text-left">
-                    <h3 className="text-white text-[24px] font-semibold mb-1">Referrals</h3>
-                    <p className="text-white text-[15px] opacity-80">Earn up to 50%</p>
+                    <h3 className="text-white text-[24px] font-semibold mb-1">{lang.profile.referrals}</h3>
+                    <p className="text-white text-[15px] opacity-80">{lang.profile.referrals_description}</p>
                 </div>
                 <Users className="w-[50px] h-[50px] text-white opacity-30" />
             </button>
@@ -90,7 +93,7 @@ export function Profile({ authData }: ProfileProps) {
             {/* Trade History */}
             <div className="mb-4 flex justify-center animate-fade-in" style={{ animationDelay: '0.15s' }}>
                 <div style={{ borderTop: '1.5px solid rgba(255, 255, 255, 0.12)' }} className="bg-[#1A1A1A] rounded-full px-5 py-2 flex items-center gap-2 border border-[#404040] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                    <h2 className="text-[#808080] text-[18px] font-normal">Trade History</h2>
+                    <h2 className="text-[#808080] text-[18px] font-normal">{lang.profile.trade_history}</h2>
                 </div>
             </div>
 
@@ -120,8 +123,8 @@ export function Profile({ authData }: ProfileProps) {
                                         ))}
                                     </div>
                                     <div>
-                                        <p className="text-white text-[20px] font-semibold">{trade.user_items.length} Gifts</p>
-                                        <p className="text-[#999] text-[14px]">Sent</p>
+                                        <p className="text-white text-[20px] font-semibold">{lang.profile.gifts_count} {trade.user_items.length}</p>
+                                        <p className="text-[#999] text-[14px]">{lang.profile.sent_button}</p>
                                     </div>
                                 </div>
 
@@ -131,8 +134,8 @@ export function Profile({ authData }: ProfileProps) {
                                 {/* Received */}
                                 <div className="flex items-center gap-3">
                                     <div>
-                                        <p className="text-white text-[20px] font-semibold text-right">{trade.partner_items.length} Gifts</p>
-                                        <p className="text-[#00A61E] text-[14px] text-right">Get</p>
+                                        <p className="text-white text-[20px] font-semibold text-right">{lang.profile.gifts_count} {trade.partner_items.length}</p>
+                                        <p className="text-[#00A61E] text-[14px] text-right">{lang.profile.get_button}</p>
                                     </div>
                                     <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
                                         {trade.partner_items.map((item, index2) => (

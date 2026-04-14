@@ -4,6 +4,8 @@ import { TON_WALLET } from '../../../config';
 import {TonConnectUI} from "@tonconnect/ui";
 import { CustomDialog } from './custom-dialog';
 import { TonIcon } from './ton-icon';
+// @ts-ignore
+import translates from '../../../translates';
 
 interface BalanceTonProps {
     ui: TonConnectUI;
@@ -13,13 +15,14 @@ interface BalanceTonProps {
 }
 
 export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBalance}: BalanceTonProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [amountDeposit, setAmountDeposit] = useState('');
     const [amountWithdraw, setAmountWithdraw] = useState('');
     const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
     const [showSuccessDialog, setShowSuccessDialog] = useState(false);
     const [showErrorDialog, setShowErrorDialog] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    
+
     const handleDepositTon = () => {
         ui.sendTransaction({
             validUntil: Math.floor(Date.now() / 1000) + 300,
@@ -39,7 +42,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
             if (data.success) {
                 setShowSuccessDialog(true);
             } else {
-                setErrorMessage(data.data || 'Ошибка при выводе');
+                setErrorMessage(data.data || lang.balance.withdraw_error);
                 setShowErrorDialog(true);
             }
         });
@@ -113,7 +116,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                         {/* Deposit Section */}
                         <div className="bg-[#303030] rounded-[20px] p-5 mb-6">
                             <div className="mb-4">
-                                <p className="text-[#999] text-[14px] mb-3">Сумма пополнения</p>
+                                <p className="text-[#999] text-[14px] mb-3">{lang.balance.deposit_amount}</p>
                                 <div className="bg-[#1C1C1E] border-2 border-[#595959] rounded-[15px] h-[60px] px-4 flex items-center justify-between focus-within:border-[#007AFF] transition-colors">
                                     <input
                                         type="text"
@@ -126,7 +129,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                             </div>
 
                             <div className="flex items-center justify-between bg-[#1C1C1E] rounded-[12px] p-3">
-                                <span className="text-[#999] text-[14px]">Баланс в кошельке</span>
+                                <span className="text-[#999] text-[14px]">{lang.balance.wallet_balance}</span>
                                 <div className="flex items-center gap-1">
                                     <span className="text-[#007AFF] text-[16px] font-semibold">{blockhainBalance}</span>
                                     <div style={{ marginTop: '-2px' }}>
@@ -142,7 +145,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                                 onClick={handleCancelDeposit}
                                 className="flex-1 bg-transparent border-2 border-[#999] rounded-[25px] h-[55px] text-[#999] text-[18px] font-semibold hover:border-white hover:text-white transition-colors"
                             >
-                                Отмена
+                                {lang.balance.cancel_button}
                             </button>
 
                             <button
@@ -154,7 +157,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                                         : 'bg-[#007AFF] hover:bg-[#0066CC]'
                                 }`}
                             >
-                                Пополнить
+                                {lang.balance.deposit_button}
                             </button>
                         </div>
                     </>
@@ -163,7 +166,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                         {/* Withdraw Section */}
                         <div className="bg-[#303030] rounded-[20px] p-5 mb-6">
                             <div className="mb-4">
-                                <p className="text-[#999] text-[14px] mb-3">Сумма вывода</p>
+                                <p className="text-[#999] text-[14px] mb-3">{lang.balance.withdraw_amount}</p>
                                 <div className="bg-[#1C1C1E] border-2 border-[#595959] rounded-[15px] h-[60px] px-4 flex items-center justify-between focus-within:border-[#007AFF] transition-colors">
                                     <input
                                         type="text"
@@ -176,7 +179,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                             </div>
 
                             <div className="flex items-center justify-between bg-[#1C1C1E] rounded-[12px] p-3">
-                                <span className="text-[#999] text-[14px]">Баланс в системе</span>
+                                <span className="text-[#999] text-[14px]">{lang.balance.wallet_blockchain}</span>
                                 <div className="flex items-center gap-1">
                                     <span className="text-[#007AFF] text-[16px] font-semibold">{localBalance}</span>
                                     <div style={{ marginTop: '-2px' }}>
@@ -192,7 +195,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                                 onClick={handleCancelDeposit}
                                 className="flex-1 bg-transparent border-2 border-[#999] rounded-[25px] h-[55px] text-[#999] text-[18px] font-semibold hover:border-white hover:text-white transition-colors"
                             >
-                                Отмена
+                                {lang.balance.cancel_button}
                             </button>
 
                             <button
@@ -204,7 +207,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                                         : 'bg-[#007AFF] hover:bg-[#0066CC]'
                                 }`}
                             >
-                                Вывести
+                                {lang.balance.withdraw_button}
                             </button>
                         </div>
                     </>
@@ -213,15 +216,15 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                 {/* Custom Dialogs */}
                 <CustomDialog
                     isOpen={showSuccessDialog}
-                    title="Успешно"
-                    message="Запрос на вывод успешно отправлен!"
+                    title={lang.balance.success_title}
+                    message={lang.balance.success_message}
                     type="alert"
                     onConfirm={() => setShowSuccessDialog(false)}
                 />
 
                 <CustomDialog
                     isOpen={showErrorDialog}
-                    title="Ошибка"
+                    title={lang.balance.error_title}
                     message={errorMessage}
                     type="alert"
                     onConfirm={() => setShowErrorDialog(false)}

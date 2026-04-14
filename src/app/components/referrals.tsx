@@ -5,12 +5,15 @@ import Referals from '../Referals';
 import {ReferalHistory} from '../interface/ReferalHistory';
 import {AuthData} from "../interface/AuthData.tsx";
 const imgPhoto = BASE_PATH + "/images/b40069be8827d28186f71205316130af8e40fdf6.png";
+// @ts-ignore
+import translates from '../../../translates';
 
 interface ReferralsProps {
     authData: AuthData;
 }
 
 export function Referrals({ authData }: ReferralsProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [isReferalLoaded, setIsReferalLoaded] = useState(false);
     const [referalHistory, setReferalHistory] = useState<ReferalHistory[]>([]);
     const [referalCount, setReferalCount] = useState('0');
@@ -53,17 +56,17 @@ export function Referrals({ authData }: ReferralsProps) {
             <div className="flex items-center justify-between mb-8 px-4">
                 <div className="text-center flex-1">
                     <p className="text-[#00A61E] text-[20px] font-semibold">+{totalEarned}</p>
-                    <p className="text-[#999] text-[14px]">Total Earned</p>
+                    <p className="text-[#999] text-[14px]">{lang.referrals.earned}</p>
                 </div>
                 <div className="w-[1px] h-[40px] bg-[#595959]" />
                 <div className="text-center flex-1">
                     <p className="text-white text-[20px] font-semibold">{referalCount}</p>
-                    <p className="text-[#999] text-[14px]">Referrals</p>
+                    <p className="text-[#999] text-[14px]">{lang.referrals.referrals}</p>
                 </div>
                 <div className="w-[1px] h-[40px] bg-[#595959]" />
                 <div className="text-center flex-1">
                     <p className="text-white text-[20px] font-semibold">{tradesCount}</p>
-                    <p className="text-[#999] text-[14px]">Trades</p>
+                    <p className="text-[#999] text-[14px]">{lang.referrals.trades}</p>
                 </div>
             </div>
 
@@ -76,7 +79,7 @@ export function Referrals({ authData }: ReferralsProps) {
                     onClick={handleCopyLink}
                     className="bg-[#007AFF] rounded-[25px] px-4 py-2 flex items-center gap-2 text-white text-[16px] font-semibold"
                 >
-                    Copy link <Link className="w-4 h-4" />
+                    {lang.referrals.copy_link} <Link className="w-4 h-4" />
                 </button>
             </div>
 

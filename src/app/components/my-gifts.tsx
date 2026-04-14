@@ -8,12 +8,15 @@ import { Gift } from '../interface/Gift';
 import Gifts from '../Gifts';
 import lottie from 'lottie-web';
 import {Player} from "@lottiefiles/react-lottie-player";
+// @ts-ignore
+import translates from '../../../translates';
 
 interface MyGiftsProps {
     onAddGifts: () => void;
     authData: AuthData;
 }
 export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [showWithdrawModal, setShowWithdrawModal] = useState(false);
     const [showCollectionModal, setShowCollectionModal] = useState(false);
     const [selectedGift, setSelectedGift] = useState<Gift|null>(null);
@@ -110,13 +113,13 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                         onClick={onAddGifts}
                         className="flex-1 bg-[#007AFF] rounded-[25px] h-[55px] text-white text-[18px] font-semibold flex items-center justify-center gap-2"
                     >
-                        Add Gifts <Plus className="w-5 h-5" />
+                        {lang.my_gifts.add_button} <Plus className="w-5 h-5" />
                     </button>
                     <button
                         onClick={() => setShowWithdrawModal(true)}
                         className="flex-1 bg-[#007AFF] rounded-[25px] h-[55px] text-white text-[18px] font-semibold flex items-center justify-center gap-2"
                     >
-                        Withdraw <img src="/images/send.png" alt="send" className="w-5 h-5" style={{ filter: 'brightness(0) invert(1)' }} />
+                        {lang.my_gifts.withdraw_button} <img src="/images/send.png" alt="send" className="w-5 h-5" style={{ filter: 'brightness(0) invert(1)' }} />
                     </button>
                 </div>
 
@@ -127,7 +130,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                             style={{ borderTop: '1.5px solid rgba(255, 255, 255, 0.12)' }}
                             className="flex items-center gap-2 px-4 py-2 rounded-[20px] bg-[#303030] text-white text-[14px]"
                         >
-                            Collection {selectedCollections.length > 0 && `(${selectedCollections.length})`} <ChevronDown className="w-4 h-4" />
+                            {lang.my_gifts.collection_button} {selectedCollections.length > 0 && `(${selectedCollections.length})`} <ChevronDown className="w-4 h-4" />
                         </button>
                         <button
                             key={sortOrder}
@@ -140,12 +143,12 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                         >
                             {sortOrder === 'low-to-high' ? (
                                 <>
-                                    Low to High
+                                    {lang.my_gifts.low2high_button}
                                     <ChevronUp className="w-4 h-4" />
                                 </>
                             ) : (
                                 <>
-                                    High to Low
+                                    {lang.my_gifts.high2low_button}
                                     <ChevronDown className="w-4 h-4" />
                                 </>
                             )}
@@ -183,7 +186,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                     <div className="flex flex-col items-center justify-center" style={{ minHeight: '400px' }}>
                         <div ref={lottieContainer} style={{ width: '200px', height: '200px' }}></div>
                         <p className="text-[#999] text-[16px] text-center mt-4">
-                            У вас нету подарков, внесите их
+                            {lang.my_gifts.no_gifts_title}
                         </p>
                     </div>
                 ) : viewMode === 'card' ? (
@@ -205,7 +208,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                                     src={gift.img}
                                     style={{ width: `100px`, height: `100px` }}
                                 />
-                                <h3 className="text-white text-[16px] font-medium mb-1">{gift.title} {gift.num}</h3>
+                                <h3 className="text-white text-[16px] font-medium mb-1">{gift.title} #{gift.num}</h3>
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <p className="text-[#999] text-[12px]">{gift.attributes2.model.name}</p>
@@ -236,7 +239,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                                     style={{ width: `100px`, height: `100px` }}
                                 />
                                 <div className="flex-1">
-                                    <h3 className="text-white text-[18px] font-medium">{gift.title} {gift.num}</h3>
+                                    <h3 className="text-white text-[18px] font-medium">{gift.title} #{gift.num}</h3>
                                 </div>
                                 <div className="text-right">
                                     <p className="text-white text-[18px] font-semibold">{gift.price} TON</p>

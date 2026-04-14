@@ -1,4 +1,6 @@
 import { useState } from 'react';
+// @ts-ignore
+import translates from '../../../translates';
 
 interface CollectionFilterModalProps {
     onClose: () => void;
@@ -109,6 +111,7 @@ const collections = [
 ];
 
 export function CollectionFilterModal({ onClose, onApply }: CollectionFilterModalProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
     const toggleCollection = (collection: string) => {
@@ -135,7 +138,7 @@ export function CollectionFilterModal({ onClose, onApply }: CollectionFilterModa
 
             {/* Modal */}
             <div className="fixed bottom-0 left-0 right-0 bg-[#1C1C1E] rounded-t-[30px] p-6 z-50 animate-slide-up max-w-[390px] mx-auto" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', maxHeight: '80vh' }}>
-                <h2 className="text-white text-[24px] font-semibold text-center mb-4">Коллекции</h2>
+                <h2 className="text-white text-[24px] font-semibold text-center mb-4">{lang.collection.title}</h2>
 
                 {/* Collections List - goes to bottom of screen */}
                 <div className="overflow-y-auto scrollbar-hide" style={{ maxHeight: 'calc(80vh - 100px)' }}>
@@ -151,12 +154,12 @@ export function CollectionFilterModal({ onClose, onApply }: CollectionFilterModa
                             >
                                 {/* Checkbox */}
                                 <div className="w-[20px] h-[20px] flex items-center justify-center flex-shrink-0">
-                                    <img 
+                                    <img
                                         src={selectedCollections.includes(collection) ? "/images/1checkbox.png" : "/images/checkbox.png"}
-                                        alt="checkbox" 
+                                        alt="checkbox"
                                         className="w-[20px] h-[20px]"
                                         style={{
-                                            filter: selectedCollections.includes(collection) 
+                                            filter: selectedCollections.includes(collection)
                                                 ? 'brightness(0) saturate(100%) invert(47%) sepia(96%) saturate(2878%) hue-rotate(195deg) brightness(102%) contrast(101%)'
                                                 : 'brightness(0) saturate(100%) invert(70%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(90%) contrast(80%)'
                                         }}
@@ -175,13 +178,13 @@ export function CollectionFilterModal({ onClose, onApply }: CollectionFilterModa
                         className="flex-1 rounded-[25px] h-[55px] text-white text-[18px] font-semibold"
                         style={{ backgroundColor: '#2F2F2F' }}
                     >
-                        Сбросить
+                        {lang.collection.reset_button}
                     </button>
                     <button
                         onClick={handleApply}
                         className="flex-1 bg-[#007AFF] rounded-[25px] h-[55px] text-white text-[18px] font-semibold"
                     >
-                        Применить
+                        {lang.collection.confirm_button}
                     </button>
                 </div>
             </div>

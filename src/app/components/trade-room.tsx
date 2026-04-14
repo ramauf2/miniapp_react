@@ -12,6 +12,8 @@ import { CustomDialog } from './custom-dialog';
 import { TonIcon } from './ton-icon';
 import socketEvents from "../socketEvents";
 import {Player} from "@lottiefiles/react-lottie-player";
+// @ts-ignore
+import translates from '../../../translates';
 
 // Removed hardcoded avatar images - now using real Telegram avatars from tradeData
 
@@ -24,6 +26,7 @@ interface TradeRoomProps {
 }
 
 export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [partnerView, setPartnerView] = useState<'trade' | 'inventory'>('trade');
     const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
     const [isPartnerInventoryModalOpen, setIsPartnerInventoryModalOpen] = useState(false);
@@ -255,7 +258,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                     return;
                 }
                 // Обработка ошибки в формате {'success' => false, 'error' => 'Описание ошибки'}
-                const errorMessage = data.error || data.data || 'Error updating trade';
+                const errorMessage = data.error || data.data || lang.trade_room.error_trade;
                 showErrorToast(errorMessage);
                 return;
             }
@@ -271,7 +274,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
             }
         }).catch(() => {
             if (!silent) {
-                showErrorToast('Network error');
+                showErrorToast(lang.trade_room.error_network);
             }
         });
     }
@@ -418,7 +421,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                                 partnerView === 'trade' ? 'text-white' : 'text-[#B3B3B3]'
                                             }`}
                                         >
-                                            In Trade
+                                            {lang.trade_room.in_trade}
                                         </button>
                                         <button
                                             onClick={() => {
@@ -429,7 +432,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                                 partnerView === 'inventory' ? 'text-white' : 'text-[#B3B3B3]'
                                             }`}
                                         >
-                                            Inventory
+                                            {lang.trade_room.inventory}
                                         </button>
                                     </div>
                                 </div>
@@ -483,7 +486,6 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                     ))}
                                     <button
                                         onClick={() => {
-                                            console.log('Plus button clicked, opening modal');
                                             setIsGiftModalOpen(true);
                                         }}
                                         className="aspect-square rounded-[15px] bg-[#515151] flex items-center justify-center"
@@ -558,9 +560,9 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                         <div>
                             <div className="text-[#999] text-[15px] mb-2 flex items-center gap-1">
                                 {activeUser === 'self' ? (
-                                    <>Добавить <TonIcon size={14} /> в обмен</>
+                                    <>{lang.trade_room.add_tons}</>
                                 ) : (
-                                    <>Сумма <TonIcon size={14} /> партнера</>
+                                    <>{lang.trade_room.partner_tons}</>
                                 )}
                             </div>
                             <div className="bg-[#1C1C1E] border-2 border-[#595959] rounded-[15px] h-[53px] px-4 flex items-center justify-between transition-colors mb-2">
@@ -590,7 +592,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                     {/* Accept Trade Button */}
                     {!isGiftsLoaded ? (
                         <div className="w-full bg-[#303030] rounded-[25px] h-[55px] flex items-center justify-center mb-3">
-                            <span className="text-[#999] text-[18px]">Загрузка...</span>
+                            <span className="text-[#999] text-[18px]">{lang.trade_room.loading}</span>
                         </div>
                     ) : (
                         <>
@@ -599,29 +601,29 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                                 {/* Your Status */}
                                 {!isSelfAccepted ? (
                                     <button onClick={handleAcceptTrade} className="flex-1 bg-[#007AFF] rounded-[25px] h-[55px] text-white text-[18px] font-semibold">
-                                        Accept Trade
+                                        {lang.trade_room.accept_button}
                                     </button>
                                 ) : (
                                     <div className="flex-1 bg-[rgba(108,108,108,0.7)] rounded-[25px] h-[55px] flex items-center justify-center">
-                                        <span className="text-white text-[16px] font-semibold">You accepted</span>
+                                        <span className="text-white text-[16px] font-semibold">{lang.trade_room.trade_accepted}</span>
                                     </div>
                                 )}
 
                                 {/* Partner Status */}
                                 {isPartnerAccepted ? (
                                     <div className="flex-1 bg-[rgba(108,108,108,0.7)] rounded-[25px] h-[55px] flex items-center justify-center">
-                                        <span className="text-white text-[16px] font-semibold">Partner accepted</span>
+                                        <span className="text-white text-[16px] font-semibold">{lang.trade_room.partner_accepted}</span>
                                     </div>
                                 ) : (
                                     <div className="flex-1 bg-[rgba(108,108,108,0.7)] rounded-[25px] h-[55px] flex items-center justify-center">
-                                        <span className="text-white text-[16px] font-semibold">Partner waiting</span>
+                                        <span className="text-white text-[16px] font-semibold">{lang.trade_room.partner_waiting}</span>
                                     </div>
                                 )}
                             </div>
 
                             {/* Cancel Trade Button - всегда показываем */}
                             <button onClick={handleCancelTrade} className="w-full bg-[#303030] rounded-[25px] h-[55px] text-red-500 text-[18px] font-semibold">
-                                Cancel Trade
+                                {lang.trade_room.cancel_button}
                             </button>
                         </>
                     )}
@@ -659,38 +661,38 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                     {/* Custom Dialogs */}
                     <CustomDialog
                         isOpen={showCancelDialog}
-                        title="Отменить обмен?"
-                        message="Вы уверены, что хотите отменить этот обмен?"
+                        title={lang.trade_room.cancel_dialog_title}
+                        message={lang.trade_room.cancel_dialog_message}
                         type="confirm"
-                        confirmText="Отменить"
-                        cancelText="Назад"
+                        confirmText={lang.trade_room.cancel_dialog_confirm}
+                        cancelText={lang.trade_room.back_button}
                         onConfirm={handleConfirmCancelTrade}
                         onCancel={() => setShowCancelDialog(false)}
                     />
 
                     <CustomDialog
                         isOpen={showAcceptDialog}
-                        title="Принять обмен?"
-                        message="После принятия ваши подарки будут заморожены"
+                        title={lang.trade_room.accept_dialog_title}
+                        message={lang.trade_room.accept_dialog_message}
                         type="confirm"
-                        confirmText="Принять"
-                        cancelText="Отмена"
+                        confirmText={lang.trade_room.accept_dialog_confirm}
+                        cancelText={lang.trade_room.back_button}
                         onConfirm={handleConfirmAcceptTrade}
                         onCancel={() => setShowAcceptDialog(false)}
                     />
 
                     <CustomDialog
                         isOpen={showAlreadyAcceptedDialog}
-                        title="Обмен уже принят"
-                        message="Вы уже приняли обмен, нельзя удалять подарки"
+                        title={lang.trade_room.already_accepted_title}
+                        message={lang.trade_room.already_accepted_message}
                         type="alert"
                         onConfirm={() => setShowAlreadyAcceptedDialog(false)}
                     />
 
                     <CustomDialog
                         isOpen={showTradeCompletedDialog}
-                        title="Обмен завершен"
-                        message="Обмен успешно завершен"
+                        title={lang.trade_room.completed_title}
+                        message={lang.trade_room.completed_message}
                         type="alert"
                         onConfirm={() => window.location.reload()}
                     />

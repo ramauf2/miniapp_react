@@ -1,6 +1,8 @@
 import type { Tab } from '../App';
 import { useRef, useEffect, useState } from 'react';
 import { BASE_PATH } from '../../../config';
+// @ts-ignore
+import translates from '../../../translates';
 interface TabBarProps {
     activeTab: Tab;
     onTabChange: (tab: Tab) => void;
@@ -11,6 +13,7 @@ const imgGift = BASE_PATH + '/images/gift.png';
 const imgProfile = BASE_PATH + '/images/profile.png';
 
 export function TabBar({ activeTab, onTabChange }: TabBarProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const tradesRef = useRef<HTMLButtonElement>(null);
     const giftsRef = useRef<HTMLButtonElement>(null);
     const profileRef = useRef<HTMLButtonElement>(null);
@@ -123,7 +126,7 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
                             color: activeTab === 'trades' ? '#007AFF' : '#8E8E93'
                         }}
                     >
-            Trades
+            {lang.tab_bar.trades}
           </span>
                 </button>
 
@@ -154,7 +157,7 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
                             color: activeTab === 'gifts' ? '#007AFF' : '#8E8E93'
                         }}
                     >
-            Gifts
+            {lang.tab_bar.gifts}
           </span>
                 </button>
 
@@ -185,7 +188,7 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
                             color: activeTab === 'profile' ? '#007AFF' : '#8E8E93'
                         }}
                     >
-            Profile
+            {lang.tab_bar.profile}
           </span>
                 </button>
             </div>

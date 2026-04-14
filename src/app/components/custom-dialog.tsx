@@ -1,3 +1,6 @@
+// @ts-ignore
+import translates from '../../../translates';
+
 interface CustomDialogProps {
     isOpen: boolean;
     title: string;
@@ -9,17 +12,24 @@ interface CustomDialogProps {
     cancelText?: string;
 }
 
-export function CustomDialog({ 
-    isOpen, 
-    title, 
-    message, 
-    type, 
-    onConfirm, 
-    onCancel,
-    confirmText = 'Принять',
-    cancelText = 'Отмена'
-}: CustomDialogProps) {
+export function CustomDialog({
+                                 isOpen,
+                                 title,
+                                 message,
+                                 type,
+                                 onConfirm,
+                                 onCancel,
+                                 confirmText,
+                                 cancelText
+                             }: CustomDialogProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     if (!isOpen) return null;
+    if (!confirmText) {
+        confirmText = lang.custom_dialog.default_confirm_text
+    }
+    if (!cancelText) {
+        cancelText = lang.custom_dialog.default_cancel_text
+    }
 
     const handleConfirm = () => {
         onConfirm?.();
@@ -32,9 +42,9 @@ export function CustomDialog({
     return (
         <>
             {/* Backdrop */}
-            <div 
-                className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-40" 
-                onClick={type === 'alert' ? handleConfirm : handleCancel} 
+            <div
+                className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-40"
+                onClick={type === 'alert' ? handleConfirm : handleCancel}
             />
 
             {/* Modal */}

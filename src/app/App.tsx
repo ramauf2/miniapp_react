@@ -15,6 +15,8 @@ import io, { Socket } from 'socket.io-client';
 import User from './User';
 import Trades from './Trades';
 import { BASE_PATH, VALIDATOR_PORT, BOT_NAME, OWNER_USERNAME } from '../../config';
+// @ts-ignore
+import translates from '../../translates';
 import { getMockTradeIfNeeded } from './mockData';
 
 //declare const TonConnectUI: any;
@@ -28,6 +30,7 @@ export type Tab = 'trades' | 'gifts' | 'profile';
 export type Screen = 'home' | 'trade-link' | 'trade-room' | 'referrals' | 'balance-ton';
 
 export default function App() {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [activeTab, setActiveTab] = useState<Tab>('trades');
     const [currentScreen, setCurrentScreen] = useState<Screen>('home');
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -66,7 +69,7 @@ export default function App() {
             tg.ready();
             tg.expand();
             tg.enableClosingConfirmation();
-            
+
             // Disable vertical swipes if available
             if (typeof tg.disableVerticalSwipes === 'function') {
                 tg.disableVerticalSwipes();
@@ -341,7 +344,7 @@ export default function App() {
             if (currentScreen === 'trade-room' && authData) {
                 // Используем мок данные только если нет реальных
                 const displayTradeData = getMockTradeIfNeeded(tradeData);
-                
+
                 if (displayTradeData) {
                     return (
                         <TradeRoom
@@ -460,8 +463,11 @@ export default function App() {
                     <div className="fixed bottom-0 left-0 right-0 bg-[#1C1C1E] rounded-t-[30px] p-6 z-50 animate-slide-up max-w-[390px] mx-auto" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
                         <div className="text-center mb-6">
                             <p className="text-white text-[18px] leading-relaxed">
-                                Для добавления подарка в инвентарь, отправь сообщение на аккаунт{' '}
-                                <span className="text-[#007AFF] font-semibold">@{OWNER_USERNAME}</span> и отправь подарки
+                                {lang.main.add_gift_1}
+                                {' '}
+                                <span className="text-[#007AFF] font-semibold">@{OWNER_USERNAME}</span>
+                                {' '}
+                                {lang.main.add_gift_2}
                             </p>
                         </div>
 
@@ -469,7 +475,7 @@ export default function App() {
                             onClick={handleWriteToRelayer}
                             className="w-full bg-[#007AFF] rounded-[25px] h-[55px] text-white text-[18px] font-semibold"
                         >
-                            Написать
+                            {lang.main.write_button}
                         </button>
                     </div>
                 </>
@@ -478,8 +484,8 @@ export default function App() {
             {/* Custom Dialog */}
             <CustomDialog
                 isOpen={showTradeCompletedDialog}
-                title="Обмен завершен"
-                message="Обмен успешно завершен"
+                title={lang.main.exchange_success_1}
+                message={lang.main.exchange_success_2}
                 type="alert"
                 onConfirm={() => window.location.reload()}
             />

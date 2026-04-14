@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Referals from '../Referals';
 import { ReferalHistory } from '../interface/ReferalHistory';
 import {AuthData} from "../interface/AuthData.tsx";
+// @ts-ignore
+import translates from '../../../translates';
 
 interface ReferralsProps {
     onClose: () => void;
@@ -10,6 +12,7 @@ interface ReferralsProps {
 }
 
 export function ReferralsModal({ onClose, authData }: ReferralsProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [isReferalLoaded, setIsReferalLoaded] = useState(false);
     const [referalHistory, setReferalHistory] = useState<ReferalHistory[]>([]);
     const [referalCount, setReferalCount] = useState('0');
@@ -53,15 +56,15 @@ export function ReferralsModal({ onClose, authData }: ReferralsProps) {
                 <div className="grid grid-cols-3 gap-3 mb-6">
                     <div style={{ backgroundColor: '#1C1C1C' }} className="rounded-full aspect-square flex flex-col items-center justify-center p-3">
                         <p className="text-white text-[18px] font-semibold mb-1">{totalEarned}</p>
-                        <p className="text-white text-[11px] text-center">Заработано</p>
+                        <p className="text-white text-[11px] text-center">{lang.referrals.modal.earned}</p>
                     </div>
                     <div style={{ backgroundColor: '#1C1C1C' }} className="rounded-full aspect-square flex flex-col items-center justify-center p-3">
                         <p className="text-white text-[18px] font-semibold mb-1">{referalCount}</p>
-                        <p className="text-white text-[11px] text-center">Рефералов</p>
+                        <p className="text-white text-[11px] text-center">{lang.referrals.modal.referrals}</p>
                     </div>
                     <div style={{ backgroundColor: '#1C1C1C' }} className="rounded-full aspect-square flex flex-col items-center justify-center p-3">
                         <p className="text-white text-[18px] font-semibold mb-1">{tradesCount}</p>
-                        <p className="text-white text-[11px] text-center">Сделок</p>
+                        <p className="text-white text-[11px] text-center">{lang.referrals.modal.trades}</p>
                     </div>
                 </div>
 
@@ -77,20 +80,20 @@ export function ReferralsModal({ onClose, authData }: ReferralsProps) {
                         style={{ backgroundColor: '#2F2F2F' }}
                         className="flex-1 rounded-[25px] h-[55px] text-white text-[16px] font-semibold hover:brightness-110 transition-all"
                     >
-                        {copied ? 'Скопировано! ✓' : 'Копировать'}
+                        {copied ? lang.referrals.modal.copied_button : lang.referrals.modal.copy_button}
                     </button>
                     <button
                         onClick={() => window.open(`https://t.me/share/url?url=${encodeURIComponent(refLink)}`, '_blank')}
                         className="flex-1 bg-[#007AFF] rounded-[25px] h-[55px] text-white text-[16px] font-semibold hover:bg-[#0066CC] transition-colors"
                     >
-                        Поделиться
+                        {lang.referrals.modal.share_button}
                     </button>
                 </div>
 
                 {/* Earnings History */}
                 {referalHistory.length > 0 && (
                     <div>
-                        <h3 className="text-[#999] text-[16px] font-medium mb-3 text-center">История начислений</h3>
+                        <h3 className="text-[#999] text-[16px] font-medium mb-3 text-center">{lang.referrals.modal.history}</h3>
                         <div className="space-y-2">
                             {referalHistory.map((earning, index) => (
                                 <div key={index} className="bg-[#303030] rounded-[12px] p-3 flex items-center justify-between">

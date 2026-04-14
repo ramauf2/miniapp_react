@@ -7,6 +7,8 @@ import {AuthData} from "../interface/AuthData.tsx";
 import { CustomDialog } from './custom-dialog';
 import { TonIcon } from './ton-icon';
 import {Player} from "@lottiefiles/react-lottie-player";
+// @ts-ignore
+import translates from '../../../translates';
 
 interface WithdrawModalProps {
     onClose: () => void;
@@ -15,6 +17,7 @@ interface WithdrawModalProps {
 
 
 export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [selectedGifts, setSelectedGifts] = useState<Gift[]>([]);
     const [gifts, setGifts] = useState<Gift[]>([]);
     const withdrawAmount = (selectedGifts.length * TON_WITHDRAW_ITEM_FEE).toFixed(1);
@@ -53,6 +56,7 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                 giftsList.push({
                     id: gift.id,
                     title: gift.title,
+                    num: gift.num,
                     img: gift.img,
                     attributes: gift.attributes,
                     attributes2: attributes,
@@ -79,7 +83,7 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                 setShowSuccessDialog(true);
                 getData()
             } else {
-                setErrorMessage(data.data || 'Ошибка при выводе');
+                setErrorMessage(data.data || lang.withdraw.error);
                 setShowErrorDialog(true);
             }
         });
@@ -100,7 +104,7 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
             >
                 <div className="text-center mb-6">
                     <p className="text-white text-[16px] leading-relaxed mb-4">
-                        Выберите подарки, которые хотите вывести
+                        {lang.withdraw.select_title}
                     </p>
                 </div>
 
@@ -130,7 +134,7 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                                 />
 
                                 <div className="flex-1">
-                                    <h3 className="text-white text-[16px] font-medium">{gift.title}</h3>
+                                    <h3 className="text-white text-[16px] font-medium">{gift.title} #{gift.num}</h3>
                                     <p className="text-[#999] text-[12px]">{gift.attributes2.model.name} {gift.attributes2.model.rarity}</p>
                                 </div>
                             </div>
@@ -148,7 +152,7 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                                 : 'bg-[#007AFF]'
                         }`}
                     >
-                        <span>Вывести ({selectedGifts.length}) +{withdrawAmount}</span>
+                        <span>{lang.withdraw.withdraw_title} ({selectedGifts.length}) +{withdrawAmount}</span>
                         <div style={{ marginTop: '-3px' }}>
                             <TonIcon size={20} />
                         </div>
@@ -158,15 +162,15 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                 {/* Custom Dialogs */}
                 <CustomDialog
                     isOpen={showSuccessDialog}
-                    title="Успешно"
-                    message="Запрос на вывод успешно отправлен!"
+                    title={lang.withdraw.success_title}
+                    message={lang.withdraw.success_message}
                     type="alert"
                     onConfirm={() => setShowSuccessDialog(false)}
                 />
 
                 <CustomDialog
                     isOpen={showErrorDialog}
-                    title="Ошибка"
+                    title={lang.withdraw.dialog_error}
                     message={errorMessage}
                     type="alert"
                     onConfirm={() => setShowErrorDialog(false)}

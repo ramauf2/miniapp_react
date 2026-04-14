@@ -15,13 +15,6 @@ export default class Gifts {
                 'Authorization': 'Bearer ' + bearerToken,
             },
         });
-        const data = await result.json();
-        if (data.success) {
-            return data;
-        }
-        return {
-            success: false,
-            error: 'error gifts',
-        }
+        return await result.json();
     }
 }

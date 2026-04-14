@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import {Gift} from '../interface/Gift'
 import {Player} from "@lottiefiles/react-lottie-player";
+// @ts-ignore
+import translates from '../../../translates';
 
 interface GiftSelectorModalProps {
     availableGifts: Gift[],
@@ -14,6 +16,7 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift }
     const [selectedGifts, setSelectedGifts] = useState<string[]>([]);
 
     if (!isOpen) return null;
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
 
     const toggleItem = (giftId: string) => {
         if (selectedGifts.indexOf(giftId) !== -1) {
@@ -49,7 +52,7 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift }
             <div className="fixed bottom-0 left-0 right-0 bg-[#1C1C1E] rounded-t-[30px] p-6 z-50 animate-slide-up max-w-[390px] mx-auto" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', maxHeight: '80vh' }}>
                 <div className="text-center mb-6">
                     <p className="text-white text-[16px] leading-relaxed mb-4">
-                        Выберите подарки для добавления в трейд
+                        {lang.gift_selector.title}
                     </p>
                 </div>
 
@@ -85,7 +88,7 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift }
 
                                 {/* Gift Info */}
                                 <div className="flex-1">
-                                    <h3 className="text-white text-[16px] font-medium">{gift.title} {gift.num}</h3>
+                                    <h3 className="text-white text-[16px] font-medium">{gift.title} #{gift.num}</h3>
                                     <p className="text-[#999] text-[12px]">{gift.id}</p>
                                 </div>
                             </div>
@@ -100,7 +103,7 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift }
                         className="flex-1 rounded-[25px] h-[55px] text-white text-[18px] font-semibold pointer-events-auto"
                         style={{ backgroundColor: 'rgb(47, 47, 47)' }}
                     >
-                        Отмена
+                        {lang.gift_selector.cancel_button}
                     </button>
                     <button
                         onClick={handleApply}
@@ -111,7 +114,7 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift }
                                 : 'bg-[#007AFF]'
                         }`}
                     >
-                        Применить ({selectedGifts.length})
+                        {lang.gift_selector.accept_button} ({selectedGifts.length})
                     </button>
                 </div>
             </div>

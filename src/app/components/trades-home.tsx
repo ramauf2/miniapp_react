@@ -2,6 +2,8 @@ import {TradeHistory} from '../interface/TradeHistory';
 import {TradeData} from '../interface/TradeData';
 import {CreateTradeModal} from './create-trade-modal';
 import {getMockTradeIfNeeded} from '../mockData';
+// @ts-ignore
+import translates from '../../../translates';
 
 const imgTrade = '/images/trade.png';
 
@@ -17,6 +19,7 @@ interface TradesHomeProps {
 
 
 export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateTrade, tradeLink, showCreateTradeModal, setShowCreateTradeModal }: TradesHomeProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     // Используем мок данные только если нет реальных
     const displayTradeData = getMockTradeIfNeeded(tradeData);
 
@@ -25,9 +28,9 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
             {/* Fixed Header Section */}
             <div className="px-4 pt-4 flex-shrink-0" style={{ flexShrink: 0 }}>
                 {displayTradeData && displayTradeData.partner ? (
-                    <div 
-                        className="bg-[#303030] rounded-[20px] p-4 flex items-center justify-between mb-6 animate-quick-fade" 
-                        style={{ 
+                    <div
+                        className="bg-[#303030] rounded-[20px] p-4 flex items-center justify-between mb-6 animate-quick-fade"
+                        style={{
                             borderTop: '1.5px solid rgba(255, 255, 255, 0.12)',
                             animationDelay: '0s'
                         }}
@@ -49,11 +52,11 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
 
                 {/* Live Trades Header */}
                 <div className="mb-4 flex justify-center">
-                    <div 
-                        style={{ 
+                    <div
+                        style={{
                             borderTop: '1.5px solid rgba(255, 255, 255, 0.12)',
                             animationDelay: displayTradeData && displayTradeData.partner ? '0.05s' : '0s'
-                        }} 
+                        }}
                         className="bg-[#1A1A1A] rounded-full px-4 py-2 flex items-center gap-2 border border-[#404040] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] animate-quick-fade"
                     >
                         <img
@@ -68,7 +71,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                 filter: 'brightness(0) saturate(100%) invert(58%) sepia(89%) saturate(1000%) hue-rotate(90deg) brightness(95%) contrast(101%)'
                             }}
                         />
-                        <h3 className="text-[#808080] text-[16px] font-normal">Live Trades</h3>
+                        <h3 className="text-[#808080] text-[16px] font-normal">{lang.trades_home.live_trades}</h3>
                     </div>
                 </div>
             </div>
@@ -90,15 +93,15 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                         // Рассчитываем задержку - начинаем после заголовков
                         const baseDelay = displayTradeData && displayTradeData.partner ? 0.1 : 0.05;
                         const delay = baseDelay + (index * 0.05);
-                        
+
                         return (
-                            <div 
-                                key={index} 
-                                style={{ 
-                                    backgroundColor: '#1C1C1C', 
+                            <div
+                                key={index}
+                                style={{
+                                    backgroundColor: '#1C1C1C',
                                     borderTop: '1px solid rgba(255, 255, 255, 0.1)',
                                     animationDelay: `${delay}s`
-                                }} 
+                                }}
                                 className="rounded-[25px] p-3 relative animate-trade-card"
                             >
                                 <div className="flex items-center justify-between mb-3">
@@ -114,7 +117,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                                 <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
                                             ))}
                                         </div>
-                                        <span className="text-white text-[20px] font-semibold">{trade.user_items.length} Gifts</span>
+                                        <span className="text-white text-[20px] font-semibold">{lang.trades_home.gifts} {trade.user_items.length}</span>
                                     </div>
 
                                     {/* Arrow */}
@@ -122,7 +125,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
 
                                     {/* Their Gifts */}
                                     <div className="flex items-center gap-3">
-                                        <span className="text-white text-[20px] font-semibold">{trade.partner_items.length} Gifts</span>
+                                        <span className="text-white text-[20px] font-semibold">{lang.trades_home.gifts} {trade.partner_items.length}</span>
                                         <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
                                             {trade.partner_items.map((item, index2) => (
                                                 <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />

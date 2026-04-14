@@ -1,5 +1,7 @@
 import { Share2 } from 'lucide-react';
 import { useState } from 'react';
+// @ts-ignore
+import translates from '../../../translates';
 
 interface CreateTradeModalProps {
     onClose: () => void;
@@ -8,6 +10,7 @@ interface CreateTradeModalProps {
 }
 
 export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: CreateTradeModalProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
@@ -20,7 +23,7 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
 
     const handleShare = () => {
         if (tradeLink) {
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(tradeLink)}&text=Давай обменяемся подарками!`, '_blank');
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(tradeLink)}&text=` + lang.create_trade.url_message, '_blank');
         }
     };
 
@@ -38,10 +41,8 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                             <div className="flex items-start gap-3">
                                 <div className="text-[30px] mt-1">💰</div>
                                 <div className="flex-1">
-                                    <p className="text-white text-[18px] font-semibold mb-1">Комиссия за обмен</p>
-                                    <p className="text-[#999] text-[14px] leading-relaxed">
-                                        Стоимость создания обмена составляет 1 TON
-                                    </p>
+                                    <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.trade_fee_title}</p>
+                                    <p className="text-[#999] text-[14px] leading-relaxed">{lang.create_trade.trade_fee_text}</p>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +52,7 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                             <div className="flex items-start gap-3">
                                 <div className="text-[30px] mt-1">🔗</div>
                                 <div className="flex-1">
-                                    <p className="text-white text-[18px] font-semibold mb-2">Ваша ссылка для обмена</p>
+                                    <p className="text-white text-[18px] font-semibold mb-2">{lang.create_trade.trade_link}</p>
                                     <p className="text-[#007AFF] text-[13px] break-all">{tradeLink}</p>
                                 </div>
                             </div>
@@ -64,14 +65,14 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                                 style={{ backgroundColor: '#2F2F2F' }}
                                 className="flex-1 rounded-[25px] h-[55px] text-white text-[16px] font-semibold hover:brightness-110 transition-all"
                             >
-                                {copied ? 'Скопировано! ✓' : 'Копировать'}
+                                {copied ? lang.create_trade.copied_button: lang.create_trade.copy_button}
                             </button>
                             <button
                                 onClick={handleShare}
                                 className="flex-1 bg-[#007AFF] rounded-[25px] h-[55px] text-white text-[16px] font-semibold hover:bg-[#0066CC] transition-colors flex items-center justify-center gap-2"
                             >
                                 <Share2 className="w-5 h-5" />
-                                Поделиться
+                                {lang.create_trade.share_button}
                             </button>
                         </div>
 
@@ -80,7 +81,7 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                             onClick={handleCreateTrade}
                             className="w-full text-[#007AFF] text-[16px] font-medium py-3"
                         >
-                            Создать новую ссылку
+                            {lang.create_trade.new_link_button}
                         </button>
                     </>
                 ) : (
@@ -90,10 +91,8 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                             <div className="flex items-start gap-3">
                                 <div className="text-[30px] mt-1">💰</div>
                                 <div className="flex-1">
-                                    <p className="text-white text-[18px] font-semibold mb-1">Комиссия за обмен</p>
-                                    <p className="text-[#999] text-[14px] leading-relaxed">
-                                        Стоимость создания обмена составляет 1 TON
-                                    </p>
+                                    <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.trade_fee_title}</p>
+                                    <p className="text-[#999] text-[14px] leading-relaxed">{lang.create_trade.trade_fee_text}</p>
                                 </div>
                             </div>
                         </div>
@@ -104,8 +103,8 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                                 <div className="flex items-start gap-3">
                                     <div className="text-[30px] mt-1">🎁</div>
                                     <div className="flex-1">
-                                        <p className="text-white text-[18px] font-semibold mb-1">Обменивайтесь подарками</p>
-                                        <p className="text-[#999] text-[14px]">Безопасно и быстро обменивайтесь подарками с другими пользователями</p>
+                                        <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.title_1}</p>
+                                        <p className="text-[#999] text-[14px]">{lang.create_trade.text_1}</p>
                                     </div>
                                 </div>
                             </div>
@@ -113,8 +112,8 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                                 <div className="flex items-start gap-3">
                                     <div className="text-[30px] mt-1">🔒</div>
                                     <div className="flex-1">
-                                        <p className="text-white text-[18px] font-semibold mb-1">Защищенная сделка</p>
-                                        <p className="text-[#999] text-[14px]">Обмен происходит одновременно, никто не может обмануть</p>
+                                        <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.title_2}</p>
+                                        <p className="text-[#999] text-[14px]">{lang.create_trade.text_2}</p>
                                     </div>
                                 </div>
                             </div>
@@ -122,8 +121,8 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                                 <div className="flex items-start gap-3">
                                     <div className="text-[30px] mt-1">⚡</div>
                                     <div className="flex-1">
-                                        <p className="text-white text-[18px] font-semibold mb-1">Мгновенно</p>
-                                        <p className="text-[#999] text-[14px]">Создайте ссылку за секунду и начните обмен прямо сейчас</p>
+                                        <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.title_3}</p>
+                                        <p className="text-[#999] text-[14px]">{lang.create_trade.text_3}</p>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +133,7 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                             onClick={handleCreateTrade}
                             className="w-full bg-[#007AFF] rounded-[25px] h-[55px] text-white text-[18px] font-semibold hover:bg-[#0066CC] transition-colors"
                         >
-                            Создать обмен (1 TON)
+                            {lang.create_trade.create_button}
                         </button>
                     </>
                 )}
