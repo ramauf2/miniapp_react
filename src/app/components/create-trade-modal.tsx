@@ -1,5 +1,6 @@
 import { Share2 } from 'lucide-react';
 import { useState } from 'react';
+import { Player } from '@lottiefiles/react-lottie-player';
 // @ts-ignore
 import translates from '../../../translates';
 
@@ -39,7 +40,14 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                         {/* Fee Info */}
                         <div style={{ backgroundColor: '#2F2F2F' }} className="rounded-[20px] p-4 mb-4">
                             <div className="flex items-start gap-3">
-                                <div className="text-[30px] mt-1">💰</div>
+                                <div className="w-[30px] h-[30px] mt-1">
+                                    <Player
+                                        autoplay
+                                        loop
+                                        src="/images/TgSticker_28d74c0b.json"
+                                        style={{ width: '30px', height: '30px' }}
+                                    />
+                                </div>
                                 <div className="flex-1">
                                     <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.trade_fee_title}</p>
                                     <p className="text-[#999] text-[14px] leading-relaxed">{lang.create_trade.trade_fee_text}</p>
@@ -50,7 +58,14 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                         {/* Trade Link */}
                         <div style={{ backgroundColor: '#2F2F2F' }} className="rounded-[20px] p-4 mb-4">
                             <div className="flex items-start gap-3">
-                                <div className="text-[30px] mt-1">🔗</div>
+                                <div className="w-[30px] h-[30px] mt-1">
+                                    <Player
+                                        autoplay
+                                        loop
+                                        src="/images/TgSticker_016b8c88.json"
+                                        style={{ width: '30px', height: '30px' }}
+                                    />
+                                </div>
                                 <div className="flex-1">
                                     <p className="text-white text-[18px] font-semibold mb-2">{lang.create_trade.trade_link}</p>
                                     <p className="text-[#007AFF] text-[13px] break-all">{tradeLink}</p>
@@ -87,43 +102,19 @@ export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: Crea
                 ) : (
                     <>
                         {/* Fee Info */}
-                        <div style={{ backgroundColor: '#2F2F2F' }} className="rounded-[20px] p-4 mb-4">
+                        <div style={{ backgroundColor: '#2F2F2F' }} className="rounded-[20px] p-4 mb-6">
                             <div className="flex items-start gap-3">
-                                <div className="text-[30px] mt-1">💰</div>
+                                <div className="w-[30px] h-[30px] mt-1">
+                                    <Player
+                                        autoplay
+                                        loop
+                                        src="/images/TgSticker_28d74c0b.json"
+                                        style={{ width: '30px', height: '30px' }}
+                                    />
+                                </div>
                                 <div className="flex-1">
                                     <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.trade_fee_title}</p>
                                     <p className="text-[#999] text-[14px] leading-relaxed">{lang.create_trade.trade_fee_text}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Info Cards */}
-                        <div className="space-y-3 mb-6">
-                            <div style={{ backgroundColor: '#2F2F2F' }} className="rounded-[20px] p-4">
-                                <div className="flex items-start gap-3">
-                                    <div className="text-[30px] mt-1">🎁</div>
-                                    <div className="flex-1">
-                                        <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.title_1}</p>
-                                        <p className="text-[#999] text-[14px]">{lang.create_trade.text_1}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style={{ backgroundColor: '#2F2F2F' }} className="rounded-[20px] p-4">
-                                <div className="flex items-start gap-3">
-                                    <div className="text-[30px] mt-1">🔒</div>
-                                    <div className="flex-1">
-                                        <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.title_2}</p>
-                                        <p className="text-[#999] text-[14px]">{lang.create_trade.text_2}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style={{ backgroundColor: '#2F2F2F' }} className="rounded-[20px] p-4">
-                                <div className="flex items-start gap-3">
-                                    <div className="text-[30px] mt-1">⚡</div>
-                                    <div className="flex-1">
-                                        <p className="text-white text-[18px] font-semibold mb-1">{lang.create_trade.title_3}</p>
-                                        <p className="text-[#999] text-[14px]">{lang.create_trade.text_3}</p>
-                                    </div>
                                 </div>
                             </div>
                         </div>

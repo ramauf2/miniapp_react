@@ -51,29 +51,29 @@ export function Profile({ authData }: ProfileProps) {
     return (
         <div className="h-full px-4 pt-8">
             {/* User Info */}
-            <div className="text-center mb-6 animate-fade-in" style={{ animationDelay: '0s' }}>
+            <div className="text-center mb-4 animate-fade-in" style={{ animationDelay: '0s' }}>
                 <img
                     src={authData.avatar}
                     alt="Profile"
-                    className="w-[140px] h-[140px] rounded-full object-cover mx-auto mb-2"
+                    className="w-[90px] h-[90px] rounded-full object-cover mx-auto mb-2"
                 />
                 <p className="text-[#999] text-[14px]">@{authData.username}</p>
             </div>
 
-            <div className="flex items-center justify-center gap-8 mb-8 animate-fade-in" style={{ animationDelay: '0.05s' }}>
+            <div className="flex items-center justify-center gap-8 mb-4 animate-fade-in" style={{ animationDelay: '0.05s' }}>
                 <div className="text-center">
                     <div className="flex items-center justify-center gap-1">
-                        <p className="text-white text-[24px] font-semibold">{stats.tradeAmount}</p>
+                        <p className="text-white text-[20px] font-semibold">{stats.tradeAmount}</p>
                         <div style={{ marginTop: '2px' }}>
-                            <TonIcon size={24} />
+                            <TonIcon size={20} />
                         </div>
                     </div>
-                    <p className="text-[#999] text-[14px]">{lang.profile.trade_volume}</p>
+                    <p className="text-[#999] text-[13px]">{lang.profile.trade_volume}</p>
                 </div>
-                <div className="w-[1px] h-[40px] bg-[#595959]" />
+                <div className="w-[1px] h-[35px] bg-[#595959]" />
                 <div className="text-center">
-                    <p className="text-white text-[24px] font-semibold">{stats.itemsCount}</p>
-                    <p className="text-[#999] text-[14px]">{lang.profile.trades}</p>
+                    <p className="text-white text-[20px] font-semibold">{stats.itemsCount}</p>
+                    <p className="text-[#999] text-[13px]">{lang.profile.trades}</p>
                 </div>
             </div>
 
@@ -81,7 +81,7 @@ export function Profile({ authData }: ProfileProps) {
             <button
                 onClick={() => setShowReferralsModal(true)}
                 style={{ backgroundColor: '#1E1E1E', animationDelay: '0.1s' }}
-                className="w-full rounded-[20px] p-5 flex items-center justify-between mb-8 hover:brightness-110 transition-all animate-fade-in"
+                className="w-full rounded-[20px] p-5 flex items-center justify-between mb-4 hover:brightness-110 transition-all animate-fade-in"
             >
                 <div className="text-left">
                     <h3 className="text-white text-[24px] font-semibold mb-1">{lang.profile.referrals}</h3>
@@ -91,13 +91,13 @@ export function Profile({ authData }: ProfileProps) {
             </button>
 
             {/* Trade History */}
-            <div className="mb-4 flex justify-center animate-fade-in" style={{ animationDelay: '0.15s' }}>
-                <div style={{ borderTop: '1.5px solid rgba(255, 255, 255, 0.12)' }} className="bg-[#1A1A1A] rounded-full px-5 py-2 flex items-center gap-2 border border-[#404040] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                    <h2 className="text-[#808080] text-[18px] font-normal">{lang.profile.trade_history}</h2>
+            <div className="mb-3 flex justify-center animate-fade-in" style={{ animationDelay: '0.15s' }}>
+                <div style={{ borderTop: '1.5px solid rgba(255, 255, 255, 0.12)' }} className="bg-[#1A1A1A] rounded-full px-4 py-1.5 flex items-center gap-2 border border-[#404040] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+                    <h2 className="text-[#808080] text-[16px] font-normal">{lang.profile.trade_history}</h2>
                 </div>
             </div>
 
-            <div className="overflow-y-auto scrollbar-hide" style={{ height: 'calc(100vh - 56px - 140px - 60px - 100px - 60px)', paddingBottom: '250px' }}>
+            <div className="overflow-y-auto scrollbar-hide" style={{ height: 'calc(100vh - 56px - 90px - 45px - 65px - 45px)', paddingBottom: '250px' }}>
                 <div className="space-y-4 pb-4">
                     {tradeHistory.map((trade, index) => (
                         <div
@@ -123,7 +123,15 @@ export function Profile({ authData }: ProfileProps) {
                                         ))}
                                     </div>
                                     <div>
-                                        <p className="text-white text-[20px] font-semibold">{lang.profile.gifts_count} {trade.user_items.length}</p>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <img 
+                                                src="/images/gift.png" 
+                                                alt="gift" 
+                                                className="w-[20px] h-[20px]" 
+                                                style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }} 
+                                            />
+                                            <p className="text-white text-[20px] font-semibold">{trade.user_items.length}</p>
+                                        </div>
                                         <p className="text-[#999] text-[14px]">{lang.profile.sent_button}</p>
                                     </div>
                                 </div>
@@ -134,7 +142,15 @@ export function Profile({ authData }: ProfileProps) {
                                 {/* Received */}
                                 <div className="flex items-center gap-3">
                                     <div>
-                                        <p className="text-white text-[20px] font-semibold text-right">{lang.profile.gifts_count} {trade.partner_items.length}</p>
+                                        <div className="flex items-center gap-2 mb-1 justify-end">
+                                            <img 
+                                                src="/images/gift.png" 
+                                                alt="gift" 
+                                                className="w-[20px] h-[20px]" 
+                                                style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }} 
+                                            />
+                                            <p className="text-white text-[20px] font-semibold">{trade.partner_items.length}</p>
+                                        </div>
                                         <p className="text-[#00A61E] text-[14px] text-right">{lang.profile.get_button}</p>
                                     </div>
                                     <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
