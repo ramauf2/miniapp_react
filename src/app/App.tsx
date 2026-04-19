@@ -387,7 +387,7 @@ export default function App() {
     return (
         <div className="relative w-full h-screen overflow-hidden" style={{ backgroundColor: '#111111', paddingTop: '40px' }}>
             <div className="max-w-[390px] h-full mx-auto relative">
-                <div className="h-[56px] flex items-center justify-between px-4 animate-fade-in" style={{ backgroundColor: '#111111', animationDelay: '0s' }}>
+                <div className="h-[56px] flex items-center justify-between px-4 animate-fade-in" style={{ backgroundColor: '#111111', animationDelay: '0s', marginTop: '20px' }}>
                     <div id="ton-connect"></div>
 
                     <div className="flex items-center gap-4">

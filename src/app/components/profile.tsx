@@ -55,7 +55,7 @@ export function Profile({ authData }: ProfileProps) {
                 <img
                     src={authData.avatar}
                     alt="Profile"
-                    className="w-[90px] h-[90px] rounded-full object-cover mx-auto mb-2"
+                    className="w-[70px] h-[70px] rounded-full object-cover mx-auto mb-2"
                 />
                 <p className="text-[#999] text-[14px]">@{authData.username}</p>
             </div>
