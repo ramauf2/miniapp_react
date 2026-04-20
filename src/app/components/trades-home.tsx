@@ -15,11 +15,12 @@ interface TradesHomeProps {
     tradeLink: string | null;
     showCreateTradeModal: boolean;
     setShowCreateTradeModal: (show: boolean) => void;
+    message: string | null;
+    lang: any;
 }
 
 
-export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateTrade, tradeLink, showCreateTradeModal, setShowCreateTradeModal }: TradesHomeProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateTrade, tradeLink, showCreateTradeModal, setShowCreateTradeModal, message, lang }: TradesHomeProps) {
     // Используем мок данные только если нет реальных
     const displayTradeData = getMockTradeIfNeeded(tradeData);
 
@@ -38,7 +39,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                         <div className="flex items-center gap-2">
                             <img src="/images/trade.png" alt="trade" className="w-6 h-6" style={{ filter: 'brightness(0) saturate(100%) invert(80%)' }} />
                             <div className="w-[12px] h-[12px] rounded-full bg-[#00A61E]" />
-                            <span className="text-white text-[18px]">Trade with @{displayTradeData.isCreator ? displayTradeData.partner : displayTradeData.user}</span>
+                            <span className="text-white text-[18px]">{lang.trades_home.trade_with} @{displayTradeData.isCreator ? displayTradeData.partner : displayTradeData.user}</span>
                         </div>
                         <button
                             onClick={onOpenTrade}
@@ -51,13 +52,24 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                 ) : ''}
 
                 {/* Ad Banner */}
-                <div 
+                {/*<div
                     className="bg-[#3A3A3A] rounded-[20px] h-[80px] mb-4 animate-quick-fade"
                     style={{
                         animationDelay: displayTradeData && displayTradeData.partner ? '0.05s' : '0s'
                     }}
                 >
-                </div>
+                </div>*/}
+
+                {message && (<div
+                    className="bg-[#3A3A3A] rounded-[20px] mb-4 animate-quick-fade"
+                    style={{
+                        animationDelay: displayTradeData && displayTradeData.partner ? '0.05s' : '0s',
+                        padding: '20px',
+                    }}
+                >
+                    {message}
+                </div>)}
+
 
                 {/* Live Trades Header */}
                 <div className="mb-4 flex justify-center">
@@ -98,7 +110,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                 }}
             >
                 {tradeHistory.length > 0 && (
-                    <div 
+                    <div
                         className="rounded-[25px] p-3"
                         style={{
                             backgroundColor: '#1C1C1C',
@@ -132,11 +144,11 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                                     ))}
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <img 
-                                                        src="/images/gift.png" 
-                                                        alt="gift" 
-                                                        className="w-[24px] h-[24px]" 
-                                                        style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }} 
+                                                    <img
+                                                        src="/images/gift.png"
+                                                        alt="gift"
+                                                        className="w-[24px] h-[24px]"
+                                                        style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
                                                     />
                                                     <span className="text-white text-[20px] font-semibold">{trade.user_items.length}</span>
                                                 </div>
@@ -148,11 +160,11 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                             {/* Their Gifts */}
                                             <div className="flex items-center gap-3">
                                                 <div className="flex items-center gap-2">
-                                                    <img 
-                                                        src="/images/gift.png" 
-                                                        alt="gift" 
-                                                        className="w-[24px] h-[24px]" 
-                                                        style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }} 
+                                                    <img
+                                                        src="/images/gift.png"
+                                                        alt="gift"
+                                                        className="w-[24px] h-[24px]"
+                                                        style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
                                                     />
                                                     <span className="text-white text-[20px] font-semibold">{trade.partner_items.length}</span>
                                                 </div>
@@ -177,6 +189,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
 
             {showCreateTradeModal && (
                 <CreateTradeModal
+                    lang={lang}
                     onClose={() => setShowCreateTradeModal(false)}
                     handleCreateTrade={handleCreateTrade}
                     tradeLink={tradeLink}

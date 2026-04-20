@@ -7,10 +7,10 @@ interface ConfirmModalProps {
     onCancel: () => void;
     confirmText?: string;
     cancelText?: string;
+    lang: any;
 }
 
-export function ConfirmModal({ title, message, onConfirm, onCancel, confirmText, cancelText }: ConfirmModalProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function ConfirmModal({ title, message, onConfirm, onCancel, confirmText, cancelText, lang }: ConfirmModalProps) {
     return (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-[#303030] rounded-[20px] p-6 mx-4 max-w-[340px] w-full">

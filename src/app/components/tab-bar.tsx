@@ -6,14 +6,14 @@ import translates from '../../../translates';
 interface TabBarProps {
     activeTab: Tab;
     onTabChange: (tab: Tab) => void;
+    lang: any
 }
 
 const imgTrade = BASE_PATH + '/images/trade.png';
 const imgGift = BASE_PATH + '/images/gift.png';
 const imgProfile = BASE_PATH + '/images/profile.png';
 
-export function TabBar({ activeTab, onTabChange }: TabBarProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function TabBar({ activeTab, onTabChange, lang }: TabBarProps) {
     const tradesRef = useRef<HTMLButtonElement>(null);
     const giftsRef = useRef<HTMLButtonElement>(null);
     const profileRef = useRef<HTMLButtonElement>(null);

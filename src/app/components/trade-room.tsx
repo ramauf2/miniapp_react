@@ -23,10 +23,10 @@ interface TradeRoomProps {
     authData: AuthData,
     tradeData: TradeData,
     goBack: () => void;
+    lang: any;
 }
 
-export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoomProps) {
     const [partnerView, setPartnerView] = useState<'trade' | 'inventory'>('trade');
     const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
     const [isPartnerInventoryModalOpen, setIsPartnerInventoryModalOpen] = useState(false);
@@ -631,6 +631,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
                     {/* Gift Selector Modal */}
                     <GiftSelectorModal
+                        lang={lang}
                         availableGifts={selfAvailableGifts}
                         isOpen={isGiftModalOpen}
                         onClose={() => setIsGiftModalOpen(false)}
@@ -639,6 +640,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
                     {/* Partner Inventory Modal */}
                     <PartnerInventoryModal
+                        lang={lang}
                         partnerGifts={partnerTotalGifts}
                         selectedGifts={partnerSelectedGifts}
                         isOpen={isPartnerInventoryModalOpen}
@@ -650,6 +652,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
                     {/* Delete Gift Modal */}
                     <DeleteGiftModal
+                        lang={lang}
                         isOpen={showDeleteModal}
                         onClose={() => {
                             setShowDeleteModal(false);
@@ -660,6 +663,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
 
                     {/* Custom Dialogs */}
                     <CustomDialog
+                        lang={lang}
                         isOpen={showCancelDialog}
                         title={lang.trade_room.cancel_dialog_title}
                         message={lang.trade_room.cancel_dialog_message}
@@ -671,6 +675,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                     />
 
                     <CustomDialog
+                        lang={lang}
                         isOpen={showAcceptDialog}
                         title={lang.trade_room.accept_dialog_title}
                         message={lang.trade_room.accept_dialog_message}
@@ -682,6 +687,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                     />
 
                     <CustomDialog
+                        lang={lang}
                         isOpen={showAlreadyAcceptedDialog}
                         title={lang.trade_room.already_accepted_title}
                         message={lang.trade_room.already_accepted_message}
@@ -690,6 +696,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack}: TradeRoomProps
                     />
 
                     <CustomDialog
+                        lang={lang}
                         isOpen={showTradeCompletedDialog}
                         title={lang.trade_room.completed_title}
                         message={lang.trade_room.completed_message}

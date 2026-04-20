@@ -8,10 +8,10 @@ interface CreateTradeModalProps {
     onClose: () => void;
     handleCreateTrade: () => void;
     tradeLink: string | null;
+    lang: any;
 }
 
-export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink }: CreateTradeModalProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function CreateTradeModal({ onClose, handleCreateTrade, tradeLink, lang }: CreateTradeModalProps) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {

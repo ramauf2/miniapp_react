@@ -14,9 +14,9 @@ import translates from '../../../translates';
 interface MyGiftsProps {
     onAddGifts: () => void;
     authData: AuthData;
+    lang: any;
 }
-export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function MyGifts({ onAddGifts, authData, lang }: MyGiftsProps) {
     const [showWithdrawModal, setShowWithdrawModal] = useState(false);
     const [showCollectionModal, setShowCollectionModal] = useState(false);
     const [selectedGift, setSelectedGift] = useState<Gift|null>(null);
@@ -214,7 +214,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                                         <p className="text-[#999] text-[12px]">{gift.attributes2.model.name}</p>
                                         <p className="text-[#999] text-[12px]">{gift.attributes2.model.rarity}</p>
                                     </div>
-                                    <p className="text-white text-[14px] font-semibold">{gift.price} TON</p>
+                                    {false && (<p className="text-white text-[14px] font-semibold">{gift.price} TON</p>)}
                                 </div>
                             </div>
                         ))}
@@ -239,10 +239,10 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
                                     style={{ width: `100px`, height: `100px` }}
                                 />
                                 <div className="flex-1">
-                                    <h3 className="text-white text-[18px] font-medium">{gift.title} #{gift.num}</h3>
+                                    <h3 className="text-white text-[12px] font-medium">{gift.title} #{gift.num}</h3>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-white text-[18px] font-semibold">{gift.price} TON</p>
+                                    {false && (<p className="text-white text-[18px] font-semibold">{gift.price} TON</p>)}
                                 </div>
                             </div>
                         ))}
@@ -252,6 +252,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
 
             {showWithdrawModal && (
                 <WithdrawModal
+                    lang={lang}
                     onClose={() => setShowWithdrawModal(false)}
                     authData={authData}
                 />
@@ -259,6 +260,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
 
             {showCollectionModal && (
                 <CollectionFilterModal
+                    lang={lang}
                     onClose={() => setShowCollectionModal(false)}
                     onApply={(collections) => setSelectedCollections(collections)}
                 />
@@ -266,6 +268,7 @@ export function MyGifts({ onAddGifts, authData }: MyGiftsProps) {
 
             {selectedGift && (
                 <GiftDetailModal
+                    lang={lang}
                     // @ts-ignore
                     gift={selectedGift}
                     onClose={() => setSelectedGift(null)}

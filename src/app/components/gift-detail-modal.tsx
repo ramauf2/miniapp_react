@@ -14,11 +14,11 @@ interface GiftDetailModalProps {
         };
     } | null;
     onClose: () => void;
+    lang: any;
 }
 
-export function GiftDetailModal({ gift, onClose }: GiftDetailModalProps) {
+export function GiftDetailModal({ gift, onClose, lang }: GiftDetailModalProps) {
     if (!gift) return null;
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
 
     // @ts-ignore
     return (

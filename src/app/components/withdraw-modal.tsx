@@ -13,11 +13,11 @@ import translates from '../../../translates';
 interface WithdrawModalProps {
     onClose: () => void;
     authData: AuthData;
+    lang: any;
 }
 
 
-export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function WithdrawModal({ onClose, authData, lang }: WithdrawModalProps) {
     const [selectedGifts, setSelectedGifts] = useState<Gift[]>([]);
     const [gifts, setGifts] = useState<Gift[]>([]);
     const withdrawAmount = (selectedGifts.length * TON_WITHDRAW_ITEM_FEE).toFixed(1);
@@ -152,7 +152,7 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                                 : 'bg-[#007AFF]'
                         }`}
                     >
-                        <span>{lang.withdraw.withdraw_title} ({selectedGifts.length}) +{withdrawAmount}</span>
+                        <span>{lang.withdraw.withdraw_title} ({selectedGifts.length}) -{withdrawAmount}</span>
                         <div style={{ marginTop: '-3px' }}>
                             <TonIcon size={20} />
                         </div>
@@ -161,6 +161,7 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
 
                 {/* Custom Dialogs */}
                 <CustomDialog
+                    lang={lang}
                     isOpen={showSuccessDialog}
                     title={lang.withdraw.success_title}
                     message={lang.withdraw.success_message}
@@ -169,6 +170,7 @@ export function WithdrawModal({ onClose, authData }: WithdrawModalProps) {
                 />
 
                 <CustomDialog
+                    lang={lang}
                     isOpen={showErrorDialog}
                     title={lang.withdraw.dialog_error}
                     message={errorMessage}

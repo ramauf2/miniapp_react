@@ -30,7 +30,7 @@ export type Tab = 'trades' | 'gifts' | 'profile';
 export type Screen = 'home' | 'trade-link' | 'trade-room' | 'referrals' | 'balance-ton';
 
 export default function App() {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+    const [lang, setLang] = useState<any>(null);
     const [activeTab, setActiveTab] = useState<Tab>('trades');
     const [currentScreen, setCurrentScreen] = useState<Screen>('home');
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -41,6 +41,7 @@ export default function App() {
     const [localBalance, setLocalBalance] = useState(0);
     const [tradeData, setTradeData] = useState<TradeData | null>(null);
     const [tradeLink, setTradeLink] = useState<string | null>(null);
+    const [message, setMessage] = useState<string | null>(null);
     const [ui, setUi] = useState<any>(null);
     const [tradeHistory, setTradeHistory] = useState<TradeHistory[]>([]);
     const [modalConfig] = useState<{
@@ -75,10 +76,16 @@ export default function App() {
                 tg.disableVerticalSwipes();
             }
         }
+        fetch('/translates.json')
+            .then(response => response.json())
+            .then(translates => {
+                setLang(translates[localStorage.getItem('lang') ?? 'ru'])
+            })
+            .catch(error => console.error('Error fetching data:', error));
     }, []);
 
     useEffect(() => {
-        if (!ui) {
+        if (!ui && lang) {
             setUi(
                 new TonConnectUI({
                     manifestUrl: 'https://spingame2.com/tonconnect-manifest.json',
@@ -86,7 +93,7 @@ export default function App() {
                 })
             );
         }
-    }, [ui]);
+    }, [ui, lang]);
 
     useEffect(() => {
         let telegramUserId = 0;
@@ -189,6 +196,8 @@ export default function App() {
                             actor: authData.username,
                         });
                         setTradeData(data.data);
+                    } else {
+                        setMessage(data.data);
                     }
                 });
             }
@@ -322,6 +331,7 @@ export default function App() {
         if (currentScreen === 'balance-ton') {
             return (
                 <BalanceTon
+                    lang={lang}
                     ui={ui}
                     handleCancelDeposit={handleCancelDeposit}
                     blockhainBalance={0}
@@ -334,6 +344,7 @@ export default function App() {
             if (currentScreen === 'trade-link') {
                 return (
                     <TradeLink
+                        lang={lang}
                         handleCreateTrade={handleCreateTrade}
                         handleBack={handleBackToTrades}
                         tradeLink={tradeLink}
@@ -348,6 +359,7 @@ export default function App() {
                 if (displayTradeData) {
                     return (
                         <TradeRoom
+                            lang={lang}
                             socket={socketRef.current}
                             authData={authData}
                             tradeData={displayTradeData}
@@ -359,6 +371,7 @@ export default function App() {
 
             return (
                 <TradesHome
+                    lang={lang}
                     tradeData={tradeData}
                     onOpenTrade={handleOpenTradeRoom}
                     tradeHistory={tradeHistory}
@@ -366,24 +379,32 @@ export default function App() {
                     tradeLink={tradeLink}
                     showCreateTradeModal={showCreateTradeModal}
                     setShowCreateTradeModal={setShowCreateTradeModal}
+                    message={message}
                 />
             );
         }
 
         if (activeTab === 'gifts' && authData) {
-            return <MyGifts onAddGifts={() => setShowAddGiftModal(true)} authData={authData} />;
+            return <MyGifts lang={lang} onAddGifts={() => setShowAddGiftModal(true)} authData={authData} />;
         }
 
         if (activeTab === 'profile' && authData) {
             if (currentScreen === 'referrals') {
-                return <Referrals authData={authData} />;
+                return <Referrals authData={authData} lang={lang} />;
             }
-            return <Profile authData={authData} />;
+            return <Profile authData={authData} lang={lang} />;
         }
 
         return null;
     };
+    if (!lang) {
+        return <></>
+    }
 
+    // @ts-ignore
+    // @ts-ignore
+    // @ts-ignore
+    // @ts-ignore
     return (
         <div className="relative w-full h-screen overflow-hidden" style={{ backgroundColor: '#111111', paddingTop: '40px' }}>
             <div className="max-w-[390px] h-full mx-auto relative">
@@ -418,7 +439,11 @@ export default function App() {
 
                 <div className="h-[calc(100vh-56px)] overflow-hidden">{renderScreen()}</div>
 
-                <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
+                <TabBar
+                    lang={lang}
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                />
 
                 {/* Floating Create Trade Button - only on trades home screen */}
                 {activeTab === 'trades' && currentScreen === 'home' && (
@@ -448,6 +473,7 @@ export default function App() {
 
                 {showConfirmModal && modalConfig && (
                     <ConfirmModal
+                        lang={lang}
                         title={modalConfig.title}
                         message={modalConfig.message}
                         onConfirm={modalConfig.onConfirm}
@@ -483,6 +509,7 @@ export default function App() {
 
             {/* Custom Dialog */}
             <CustomDialog
+                lang={lang}
                 isOpen={showTradeCompletedDialog}
                 title={lang.main.exchange_success_1}
                 message={lang.main.exchange_success_2}

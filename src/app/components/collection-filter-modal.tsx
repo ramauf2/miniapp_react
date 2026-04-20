@@ -5,6 +5,7 @@ import translates from '../../../translates';
 interface CollectionFilterModalProps {
     onClose: () => void;
     onApply: (selectedCollections: string[]) => void;
+    lang: any;
 }
 
 const collections = [
@@ -110,8 +111,7 @@ const collections = [
     "Khabib's Papakha",
 ];
 
-export function CollectionFilterModal({ onClose, onApply }: CollectionFilterModalProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function CollectionFilterModal({ onClose, onApply, lang }: CollectionFilterModalProps) {
     const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
     const toggleCollection = (collection: string) => {
@@ -154,12 +154,12 @@ export function CollectionFilterModal({ onClose, onApply }: CollectionFilterModa
                             >
                                 {/* Checkbox */}
                                 <div className="w-[20px] h-[20px] flex items-center justify-center flex-shrink-0">
-                                    <img
+                                    <img 
                                         src={selectedCollections.includes(collection) ? "/images/1checkbox.png" : "/images/checkbox.png"}
-                                        alt="checkbox"
+                                        alt="checkbox" 
                                         className="w-[20px] h-[20px]"
                                         style={{
-                                            filter: selectedCollections.includes(collection)
+                                            filter: selectedCollections.includes(collection) 
                                                 ? 'brightness(0) saturate(100%) invert(47%) sepia(96%) saturate(2878%) hue-rotate(195deg) brightness(102%) contrast(101%)'
                                                 : 'brightness(0) saturate(100%) invert(70%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(90%) contrast(80%)'
                                         }}

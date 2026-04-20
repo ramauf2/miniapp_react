@@ -6,10 +6,10 @@ interface TradeLinkProps {
     handleCreateTrade: () => void;
     handleBack: () => void;
     tradeLink: string | null;
+    lang: any
 }
 
-export function TradeLink({ handleCreateTrade, tradeLink, handleBack }: TradeLinkProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function TradeLink({ handleCreateTrade, tradeLink, handleBack, lang }: TradeLinkProps) {
     const handleCopy = () => {
         if (tradeLink) {
             navigator.clipboard.writeText(tradeLink);

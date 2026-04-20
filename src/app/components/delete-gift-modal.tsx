@@ -4,11 +4,11 @@ interface DeleteGiftModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    lang: any;
 }
 
-export function DeleteGiftModal({ isOpen, onClose, onConfirm }: DeleteGiftModalProps) {
+export function DeleteGiftModal({ isOpen, onClose, onConfirm, lang }: DeleteGiftModalProps) {
     if (!isOpen) return null;
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
 
     const handleConfirm = () => {
         onConfirm();

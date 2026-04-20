@@ -9,10 +9,10 @@ import translates from '../../../translates';
 interface ReferralsProps {
     onClose: () => void;
     authData: AuthData;
+    lang: any;
 }
 
-export function ReferralsModal({ onClose, authData }: ReferralsProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function ReferralsModal({ onClose, authData, lang }: ReferralsProps) {
     const [isReferalLoaded, setIsReferalLoaded] = useState(false);
     const [referalHistory, setReferalHistory] = useState<ReferalHistory[]>([]);
     const [referalCount, setReferalCount] = useState('0');

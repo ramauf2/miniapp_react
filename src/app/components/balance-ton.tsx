@@ -12,10 +12,10 @@ interface BalanceTonProps {
     handleCancelDeposit: () => void;
     blockhainBalance: any;
     localBalance: any;
+    lang: any;
 }
 
-export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBalance}: BalanceTonProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBalance, lang}: BalanceTonProps) {
     const [amountDeposit, setAmountDeposit] = useState('');
     const [amountWithdraw, setAmountWithdraw] = useState('');
     const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
@@ -215,6 +215,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
 
                 {/* Custom Dialogs */}
                 <CustomDialog
+                    lang={lang}
                     isOpen={showSuccessDialog}
                     title={lang.balance.success_title}
                     message={lang.balance.success_message}
@@ -223,6 +224,7 @@ export function BalanceTon({ui, handleCancelDeposit, blockhainBalance, localBala
                 />
 
                 <CustomDialog
+                    lang={lang}
                     isOpen={showErrorDialog}
                     title={lang.balance.error_title}
                     message={errorMessage}

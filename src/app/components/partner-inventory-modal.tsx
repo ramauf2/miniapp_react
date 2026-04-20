@@ -8,11 +8,11 @@ interface PartnerInventoryModalProps {
     selectedGifts: Gift[];
     isOpen: boolean;
     onClose: () => void;
+    lang: any;
 }
 
-export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onClose }: PartnerInventoryModalProps) {
+export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onClose, lang }: PartnerInventoryModalProps) {
     if (!isOpen) return null;
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
 
     // Проверяем, добавлен ли подарок в трейд
     const isGiftSelected = (giftId: string | number) => {

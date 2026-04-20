@@ -9,14 +9,14 @@ interface GiftSelectorModalProps {
     isOpen: boolean;
     onClose: () => void;
     onAddGift: (gift: Gift) => void;
+    lang: any;
 }
 
 
-export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift }: GiftSelectorModalProps) {
+export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift, lang }: GiftSelectorModalProps) {
     const [selectedGifts, setSelectedGifts] = useState<string[]>([]);
 
     if (!isOpen) return null;
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
 
     const toggleItem = (giftId: string) => {
         if (selectedGifts.indexOf(giftId) !== -1) {

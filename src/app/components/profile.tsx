@@ -15,10 +15,10 @@ interface Stats{
 
 interface ProfileProps {
     authData: AuthData;
+    lang: any;
 }
 
-export function Profile({ authData }: ProfileProps) {
-    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
+export function Profile({ authData, lang }: ProfileProps) {
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false);
     const [tradeHistory, setTradeHistory] = useState<TradeHistory[]>([]);
     const [showReferralsModal, setShowReferralsModal] = useState(false);
@@ -124,11 +124,11 @@ export function Profile({ authData }: ProfileProps) {
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
-                                            <img 
-                                                src="/images/gift.png" 
-                                                alt="gift" 
-                                                className="w-[20px] h-[20px]" 
-                                                style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }} 
+                                            <img
+                                                src="/images/gift.png"
+                                                alt="gift"
+                                                className="w-[20px] h-[20px]"
+                                                style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
                                             />
                                             <p className="text-white text-[20px] font-semibold">{trade.user_items.length}</p>
                                         </div>
@@ -143,11 +143,11 @@ export function Profile({ authData }: ProfileProps) {
                                 <div className="flex items-center gap-3">
                                     <div>
                                         <div className="flex items-center gap-2 mb-1 justify-end">
-                                            <img 
-                                                src="/images/gift.png" 
-                                                alt="gift" 
-                                                className="w-[20px] h-[20px]" 
-                                                style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }} 
+                                            <img
+                                                src="/images/gift.png"
+                                                alt="gift"
+                                                className="w-[20px] h-[20px]"
+                                                style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
                                             />
                                             <p className="text-white text-[20px] font-semibold">{trade.partner_items.length}</p>
                                         </div>
@@ -167,6 +167,7 @@ export function Profile({ authData }: ProfileProps) {
 
             {showReferralsModal && (
                 <ReferralsModal
+                    lang={lang}
                     onClose={() => setShowReferralsModal(false)}
                     authData={authData}
                 />
