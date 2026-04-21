@@ -1,4 +1,15 @@
 import { BASE_PATH, VALIDATOR_PORT } from '../../config';
+
+// Функция для формирования URL с учетом порта
+const getApiUrl = (path = '') => {
+    // Если BASE_PATH уже содержит протокол (http/https), не добавляем порт
+    if (BASE_PATH.startsWith('http://') || BASE_PATH.startsWith('https://')) {
+        return BASE_PATH + path;
+    }
+    // Иначе добавляем порт (для локальной разработки)
+    return BASE_PATH + ':' + VALIDATOR_PORT + path;
+};
+
 export default class User {
 
     /**
@@ -12,7 +23,7 @@ export default class User {
     static async login(refUser, initData, testUser = null) {
         console.log('testuser', testUser)
 
-        const result = await fetch(BASE_PATH + ":" + VALIDATOR_PORT, {
+        const result = await fetch(getApiUrl(), {
             method: 'POST',
             credentials: 'omit',
             headers: {
@@ -38,7 +49,7 @@ export default class User {
      * @returns {Promise<{success: boolean}|any>}
      */
     static async getUserData(bearerToken) {
-        const result = await fetch(BASE_PATH + "/api/user?lang=" + localStorage.getItem('lang'), {
+        const result = await fetch(getApiUrl("/api/user?lang=" + localStorage.getItem('lang')), {
             method: 'GET',
             credentials: 'omit',
             headers: {
@@ -68,7 +79,7 @@ export default class User {
      * @returns {Promise<{success}|any|{success: boolean, error: string}>}
      */
     static async withdraw(bearerToken, items = [], amount = '', address = '') {
-        const result = await fetch(BASE_PATH + "/api/withdraw", {
+        const result = await fetch(getApiUrl("/api/withdraw"), {
             method: 'POST',
             credentials: 'omit',
             headers: {

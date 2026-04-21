@@ -54,10 +54,10 @@ export function TabBar({ activeTab, onTabChange, lang }: TabBarProps) {
     };
 
     return (
-        <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center pb-4 px-4">
+        <div className="absolute left-0 right-0 flex items-end justify-center px-4" style={{ bottom: '28px' }}>
             <div
                 ref={containerRef}
-                className="rounded-full h-[70px] flex items-center justify-between px-6"
+                className="rounded-full h-[70px] flex items-center"
                 style={{
                     width: '100%',
                     maxWidth: '390px',
@@ -71,7 +71,10 @@ export function TabBar({ activeTab, onTabChange, lang }: TabBarProps) {
             0.5px -0.5px 0 0 rgba(180, 180, 180, 0.2),
             -1px -1px 0 0 rgba(180, 180, 180, 0.1),
             1px -1px 0 0 rgba(180, 180, 180, 0.1)
-          `
+          `,
+                    paddingLeft: '24px',
+                    paddingRight: '12px',
+                    justifyContent: 'space-between'
                 }}
             >
                 {/* Animated oval background */}
@@ -104,7 +107,7 @@ export function TabBar({ activeTab, onTabChange, lang }: TabBarProps) {
                     onClick={() => handleButtonPress('trades')}
                     className="flex flex-col items-center justify-center gap-[3px] relative z-10"
                     style={{
-                        padding: '10px 16px',
+                        padding: '10px 12px',
                         transform: pressedButton === 'trades' ? 'scale(1.15)' : 'scale(1)',
                         transition: 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)'
                     }}
@@ -135,7 +138,8 @@ export function TabBar({ activeTab, onTabChange, lang }: TabBarProps) {
                     onClick={() => handleButtonPress('gifts')}
                     className="flex flex-col items-center justify-center gap-[3px] relative z-10"
                     style={{
-                        padding: '10px 16px',
+                        padding: '10px 12px',
+                        marginLeft: '8px',
                         transform: pressedButton === 'gifts' ? 'scale(1.15)' : 'scale(1)',
                         transition: 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)'
                     }}
@@ -166,7 +170,8 @@ export function TabBar({ activeTab, onTabChange, lang }: TabBarProps) {
                     onClick={() => handleButtonPress('profile')}
                     className="flex flex-col items-center justify-center gap-[3px] relative z-10"
                     style={{
-                        padding: '10px 16px',
+                        padding: '10px 12px',
+                        marginRight: '6px',
                         transform: pressedButton === 'profile' ? 'scale(1.15)' : 'scale(1)',
                         transition: 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)'
                     }}

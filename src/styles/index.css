@@ -510,11 +510,6 @@ body {
     -moz-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    /* Fullscreen support */
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
 }
 
 /* Prevent zoom on input focus (iOS) */

@@ -54,6 +54,7 @@ export default function App() {
     const socketRef = useRef<Socket | null>(null);
     const authRef = useRef<AuthData | null>(null);
     const tradeRef = useRef<TradeData | null>(null);
+    const contentRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         authRef.current = authData;
@@ -62,6 +63,13 @@ export default function App() {
     useEffect(() => {
         tradeRef.current = tradeData;
     }, [tradeData]);
+
+    // Reset scroll when changing tabs
+    useEffect(() => {
+        if (contentRef.current) {
+            contentRef.current.scrollTop = 0;
+        }
+    }, [activeTab]);
 
     // Initialize Telegram WebApp fullscreen mode
     useEffect(() => {
@@ -101,7 +109,7 @@ export default function App() {
             telegramUserId = window.Telegram.WebApp.initDataUnsafe.user.id;
         }
 
-        const socket = io(BASE_PATH + ':' + VALIDATOR_PORT, {
+        const socket = io(BASE_PATH.startsWith('http://') || BASE_PATH.startsWith('https://') ? BASE_PATH : BASE_PATH + ':' + VALIDATOR_PORT, {
             transports: ['websocket'],
             auth: {
                 tel_id: telegramUserId
@@ -212,13 +220,21 @@ export default function App() {
             });
 
             Trades.getLastHistory(authData['bearerToken']).then((data: any) => {
-                if (data.success && data.data.data && data.data.data.length > 0) {
-                    const limitedTrades = data.data.data.slice(0, 25);
+                console.log('getLastHistory response:', data);
+                if (data.success && data.data) {
+                    let trades = [];
+                    if (data.data.data && Array.isArray(data.data.data)) {
+                        trades = data.data.data;
+                    } else if (Array.isArray(data.data)) {
+                        trades = data.data;
+                    }
+                    const limitedTrades = trades.slice(0, 25);
                     setTradeHistory(limitedTrades);
                 } else {
                     setTradeHistory([]);
                 }
-            }).catch(() => {
+            }).catch((error) => {
+                console.error('Error loading last history:', error);
                 setTradeHistory([]);
             })
         }
@@ -437,7 +453,18 @@ export default function App() {
                     </div>
                 </div>
 
-                <div className="h-[calc(100vh-56px)] overflow-hidden">{renderScreen()}</div>
+                <div 
+                    ref={contentRef}
+                    className={`${activeTab === 'profile' ? 'overflow-y-auto scrollbar-hide' : 'overflow-hidden'}`} 
+                    style={{
+                        height: 'calc(100vh - 116px)',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch'
+                    }}
+                >
+                    {renderScreen()}
+                </div>
 
                 <TabBar
                     lang={lang}

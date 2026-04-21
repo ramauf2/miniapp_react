@@ -27,29 +27,46 @@ export function Profile({ authData, lang }: ProfileProps) {
         tradeAmount: 0,
     });
 
+    // Моковые данные для тестирования (20 записей)
+    const mockTradeHistory: TradeHistory[] = Array.from({ length: 20 }, (_, i) => ({
+        isCreator: i % 2 === 0,
+        user_items: Array.from({ length: Math.floor(Math.random() * 4) + 1 }, (_, j) => ({
+            img: `/images/gift.png`,
+            title: `Gift ${i}-${j}`
+        })),
+        partner_items: Array.from({ length: Math.floor(Math.random() * 4) + 1 }, (_, j) => ({
+            img: `/images/gift.png`,
+            title: `Gift ${i}-${j}`
+        })),
+        code: `TRADE${i}`,
+        created_at: new Date(Date.now() - i * 86400000).toLocaleDateString(),
+        user: `user${i}`,
+        partner: `partner${i}`
+    }));
+
     useEffect(() => {
         if (isHistoryLoaded) return;
+        // Всегда используем моковые данные для тестирования
+        setTradeHistory(mockTradeHistory);
+        setIsHistoryLoaded(true);
+        
+        // Загружаем реальные данные в фоне (но не используем их)
         Trades.getUserHistory(authData['bearerToken']).then(data => {
-            if (data.success && data.data.data && data.data.data.length > 0) {
-                if (!data.data.data.isCreator) {
-                    const userItems = data.data.data.user_items;
-                    data.data.data.user_items = data.data.data.partner_items;
-                    data.data.data.user_items = userItems;
-                }
-                setTradeHistory(data.data.data);
+            console.log('getUserHistory response:', data);
+            if (data.success && data.data && data.data.data) {
+                const trades = Array.isArray(data.data.data) ? data.data.data : [];
                 setStats({
-                    itemsCount: data.data.total,
+                    itemsCount: data.data.total || trades.length,
                     tradeAmount: 0,
                 })
             }
-            setIsHistoryLoaded(true);
-        }).catch(() => {
-            setIsHistoryLoaded(true);
+        }).catch((error) => {
+            console.error('Error loading trade history:', error);
         })
-    }, [isHistoryLoaded]);
+    }, [isHistoryLoaded, authData]);
 
     return (
-        <div className="h-full px-4 pt-8">
+        <div className="w-full px-4 pt-8" style={{ paddingBottom: '120px' }}>
             {/* User Info */}
             <div className="text-center mb-4 animate-fade-in" style={{ animationDelay: '0s' }}>
                 <img
@@ -97,72 +114,71 @@ export function Profile({ authData, lang }: ProfileProps) {
                 </div>
             </div>
 
-            <div className="overflow-y-auto scrollbar-hide" style={{ height: 'calc(100vh - 56px - 90px - 45px - 65px - 45px)', paddingBottom: '250px' }}>
-                <div className="space-y-4 pb-4">
-                    {tradeHistory.map((trade, index) => (
-                        <div
-                            key={index}
-                            className="rounded-[25px] p-3 relative animate-fade-in"
-                            style={{
-                                backgroundColor: '#1C1C1C',
-                                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                                animationDelay: `${(index * 0.04) + 0.2}s`
-                            }}
-                        >
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-[#595959] text-[15px] font-semibold">{trade.created_at}</span>
-                                <span className="text-[#595959] text-[15px]">{trade.isCreator ? trade.partner : trade.user}</span>
+            {/* Trade History List */}
+            <div className="space-y-4">
+                {tradeHistory.map((trade, index) => (
+                    <div
+                        key={index}
+                        className="rounded-[25px] p-3 relative animate-fade-in"
+                        style={{
+                            backgroundColor: '#1C1C1C',
+                            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                            animationDelay: `${(index * 0.04) + 0.2}s`
+                        }}
+                    >
+                        <div className="flex items-center justify-between mb-3">
+                            <span className="text-[#595959] text-[15px] font-semibold">{trade.created_at}</span>
+                            <span className="text-[#595959] text-[15px]">{trade.isCreator ? trade.partner : trade.user}</span>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                            {/* Sent */}
+                            <div className="flex items-center gap-3">
+                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
+                                    {trade.user_items.map((item, index2) => (
+                                        <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
+                                    ))}
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <img
+                                            src="/images/gift.png"
+                                            alt="gift"
+                                            className="w-[20px] h-[20px]"
+                                            style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
+                                        />
+                                        <p className="text-white text-[20px] font-semibold">{trade.user_items.length}</p>
+                                    </div>
+                                    <p className="text-[#999] text-[14px]">{lang.profile.sent_button}</p>
+                                </div>
                             </div>
 
-                            <div className="flex items-center justify-between">
-                                {/* Sent */}
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
-                                        {trade.user_items.map((item, index2) => (
-                                            <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
-                                        ))}
+                            {/* Arrow */}
+                            <img src={'/images/trade.png'} alt="Trade" className="w-[30px] h-[30px] opacity-70" style={{ filter: 'brightness(0) invert(1)' }} />
+
+                            {/* Received */}
+                            <div className="flex items-center gap-3">
+                                <div>
+                                    <div className="flex items-center gap-2 mb-1 justify-end">
+                                        <img
+                                            src="/images/gift.png"
+                                            alt="gift"
+                                            className="w-[20px] h-[20px]"
+                                            style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
+                                        />
+                                        <p className="text-white text-[20px] font-semibold">{trade.partner_items.length}</p>
                                     </div>
-                                    <div>
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <img
-                                                src="/images/gift.png"
-                                                alt="gift"
-                                                className="w-[20px] h-[20px]"
-                                                style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
-                                            />
-                                            <p className="text-white text-[20px] font-semibold">{trade.user_items.length}</p>
-                                        </div>
-                                        <p className="text-[#999] text-[14px]">{lang.profile.sent_button}</p>
-                                    </div>
+                                    <p className="text-[#00A61E] text-[14px] text-right">{lang.profile.get_button}</p>
                                 </div>
-
-                                {/* Arrow */}
-                                <img src={'/images/trade.png'} alt="Trade" className="w-[30px] h-[30px] opacity-70" style={{ filter: 'brightness(0) invert(1)' }} />
-
-                                {/* Received */}
-                                <div className="flex items-center gap-3">
-                                    <div>
-                                        <div className="flex items-center gap-2 mb-1 justify-end">
-                                            <img
-                                                src="/images/gift.png"
-                                                alt="gift"
-                                                className="w-[20px] h-[20px]"
-                                                style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
-                                            />
-                                            <p className="text-white text-[20px] font-semibold">{trade.partner_items.length}</p>
-                                        </div>
-                                        <p className="text-[#00A61E] text-[14px] text-right">{lang.profile.get_button}</p>
-                                    </div>
-                                    <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
-                                        {trade.partner_items.map((item, index2) => (
-                                            <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
-                                        ))}
-                                    </div>
+                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
+                                    {trade.partner_items.map((item, index2) => (
+                                        <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
 
             {showReferralsModal && (

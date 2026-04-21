@@ -1,4 +1,15 @@
-import { BASE_PATH } from '../../config';
+import { BASE_PATH, VALIDATOR_PORT } from '../../config';
+
+// Функция для формирования URL с учетом порта
+const getApiUrl = (path = '') => {
+    // Если BASE_PATH уже содержит протокол (http/https), не добавляем порт
+    if (BASE_PATH.startsWith('http://') || BASE_PATH.startsWith('https://')) {
+        return BASE_PATH + path;
+    }
+    // Иначе добавляем порт (для локальной разработки)
+    return BASE_PATH + ':' + VALIDATOR_PORT + path;
+};
+
 export default class Trades {
 
     /**
@@ -9,7 +20,7 @@ export default class Trades {
      * @returns {Promise<{success}|any|{success: boolean}>}
      */
     static async update(bearerToken, postData) {
-        const result = await fetch(BASE_PATH + "/api/trade/update", {
+        const result = await fetch(getApiUrl("/api/trade/update"), {
             method: 'POST',
             credentials: 'omit',
             headers: {
@@ -28,7 +39,7 @@ export default class Trades {
      * @returns {Promise<{success}|any|{success: boolean}>}
      */
     static async create(bearerToken) {
-        const result = await fetch(BASE_PATH + "/api/trade/create", {
+        const result = await fetch(getApiUrl("/api/trade/create"), {
             method: 'POST',
             credentials: 'omit',
             headers: {
@@ -40,7 +51,7 @@ export default class Trades {
     }
 
     static async status(bearerToken) {
-        const result = await fetch(BASE_PATH + "/api/trade/status", {
+        const result = await fetch(getApiUrl("/api/trade/status"), {
             method: 'POST',
             credentials: 'omit',
             headers: {
@@ -52,7 +63,7 @@ export default class Trades {
     }
 
     static async info(bearerToken, code) {
-        const result = await fetch(BASE_PATH + "/api/trade/info", {
+        const result = await fetch(getApiUrl("/api/trade/info"), {
             method: 'POST',
             credentials: 'omit',
             headers: {
@@ -73,7 +84,7 @@ export default class Trades {
      * @returns {Promise<{success}|any|{success: boolean}>}
      */
     static async getUserHistory(bearerToken, page = 1) {
-        const result = await fetch(BASE_PATH + "/api/trade/history/user?page=" + page, {
+        const result = await fetch(getApiUrl("/api/trade/history/user?page=" + page), {
             method: 'POST',
             credentials: 'omit',
             headers: {
@@ -93,7 +104,7 @@ export default class Trades {
      * @returns {Promise<{success}|any|{success: boolean}>}
      */
     static async getLastHistory(bearerToken, page = 1) {
-        const result = await fetch(BASE_PATH + "/api/trade/history/last?page=" + page, {
+        const result = await fetch(getApiUrl("/api/trade/history/last?page=" + page), {
             method: 'POST',
             credentials: 'omit',
             headers: {
@@ -112,7 +123,7 @@ export default class Trades {
      * @returns {Promise<{success}|any|{success: boolean}>}
      */
     static async connectToTrade(bearerToken, code) {
-        const result = await fetch(BASE_PATH + "/api/trade/connect", {
+        const result = await fetch(getApiUrl("/api/trade/connect"), {
             method: 'POST',
             credentials: 'omit',
             headers: {
