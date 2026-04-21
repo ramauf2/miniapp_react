@@ -27,41 +27,23 @@ export function Profile({ authData, lang }: ProfileProps) {
         tradeAmount: 0,
     });
 
-    // Моковые данные для тестирования (20 записей)
-    const mockTradeHistory: TradeHistory[] = Array.from({ length: 20 }, (_, i) => ({
-        isCreator: i % 2 === 0,
-        user_items: Array.from({ length: Math.floor(Math.random() * 4) + 1 }, (_, j) => ({
-            img: `/images/gift.png`,
-            title: `Gift ${i}-${j}`
-        })),
-        partner_items: Array.from({ length: Math.floor(Math.random() * 4) + 1 }, (_, j) => ({
-            img: `/images/gift.png`,
-            title: `Gift ${i}-${j}`
-        })),
-        code: `TRADE${i}`,
-        created_at: new Date(Date.now() - i * 86400000).toLocaleDateString(),
-        user: `user${i}`,
-        partner: `partner${i}`
-    }));
-
     useEffect(() => {
         if (isHistoryLoaded) return;
-        // Всегда используем моковые данные для тестирования
-        setTradeHistory(mockTradeHistory);
-        setIsHistoryLoaded(true);
         
-        // Загружаем реальные данные в фоне (но не используем их)
         Trades.getUserHistory(authData['bearerToken']).then(data => {
             console.log('getUserHistory response:', data);
             if (data.success && data.data && data.data.data) {
                 const trades = Array.isArray(data.data.data) ? data.data.data : [];
+                setTradeHistory(trades);
                 setStats({
                     itemsCount: data.data.total || trades.length,
                     tradeAmount: 0,
                 })
+                setIsHistoryLoaded(true);
             }
         }).catch((error) => {
             console.error('Error loading trade history:', error);
+            setIsHistoryLoaded(true);
         })
     }, [isHistoryLoaded, authData]);
 
