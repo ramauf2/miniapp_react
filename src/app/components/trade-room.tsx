@@ -179,15 +179,20 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
         updateRequest(selfSelectedGifts, true, selfTons);
     };
 
+
     /**
      * Добавил подарок в список обмена
      *
-     * @param gift
+     * @param gifts
      */
-    const onAddGift = (gift: Gift) => {
-        const newSelectedGifts = [...selfSelectedGifts, gift];
+    const onAddGifts = (gifts: Gift[]) => {
+        const newSelectedGifts = [...selfSelectedGifts, ...gifts];
         setSelfSelectedGifts(newSelectedGifts);
-        setSelfAvailableGifts(selfAvailableGifts.filter(i => i.id !== gift.id));
+        let newSelfAvailableGifts = selfAvailableGifts.slice(0);
+        for (let gift of gifts) {
+            newSelfAvailableGifts = newSelfAvailableGifts.filter(i => i.id !== gift.id)
+        }
+        setSelfAvailableGifts(newSelfAvailableGifts);
 
         // Отправляем весь список подарков на сервер
         updateRequest(newSelectedGifts, false, selfTons);
@@ -536,7 +541,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                                     padding: '2px'
                                                 }}
                                             >
-                                                {gift.title}
+                                                {gift.title} #{gift.num}
                                             </div>
                                         </div>
                                     ))}
@@ -635,7 +640,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                         availableGifts={selfAvailableGifts}
                         isOpen={isGiftModalOpen}
                         onClose={() => setIsGiftModalOpen(false)}
-                        onAddGift={onAddGift}
+                        onAddGifts={onAddGifts}
                     />
 
                     {/* Partner Inventory Modal */}

@@ -8,12 +8,12 @@ interface GiftSelectorModalProps {
     availableGifts: Gift[],
     isOpen: boolean;
     onClose: () => void;
-    onAddGift: (gift: Gift) => void;
+    onAddGifts: (gift: Gift[]) => void;
     lang: any;
 }
 
 
-export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift, lang }: GiftSelectorModalProps) {
+export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGifts, lang }: GiftSelectorModalProps) {
     const [selectedGifts, setSelectedGifts] = useState<string[]>([]);
 
     if (!isOpen) return null;
@@ -27,13 +27,16 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGift, 
     }
 
     const handleApply = () => {
+        //onAddGifts(selectedGifts);
+        let addGifts: Gift[] = [];
         selectedGifts.forEach(giftId => {
             // @ts-ignore
             const gift = availableGifts.find(g => g.id == giftId);
             if (gift) {
-                onAddGift(gift);
+                addGifts.push(gift);
             }
         });
+        onAddGifts(addGifts);
         setSelectedGifts([]);
         onClose();
     }
