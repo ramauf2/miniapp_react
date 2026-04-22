@@ -1,15 +1,4 @@
-import { BASE_PATH, VALIDATOR_PORT } from '../../config';
-
-// Функция для формирования URL с учетом порта
-const getApiUrl = (path = '') => {
-    // Если BASE_PATH уже содержит протокол (http/https), не добавляем порт
-    if (BASE_PATH.startsWith('http://') || BASE_PATH.startsWith('https://')) {
-        return BASE_PATH + path;
-    }
-    // Иначе добавляем порт (для локальной разработки)
-    return BASE_PATH + ':' + VALIDATOR_PORT + path;
-};
-
+import { BASE_PATH } from '../../config';
 export default class Gifts {
 
     /**
@@ -18,7 +7,7 @@ export default class Gifts {
      * @returns {Promise<{success: boolean}|any>}
      */
     static async getUserGifts(bearerToken) {
-        const result = await fetch(getApiUrl("/api/gifts"), {
+        const result = await fetch(BASE_PATH + "/api/gifts", {
             method: 'POST',
             credentials: 'omit',
             headers: {

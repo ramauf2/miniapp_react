@@ -29,23 +29,24 @@ export function Profile({ authData, lang }: ProfileProps) {
 
     useEffect(() => {
         if (isHistoryLoaded) return;
-        
         Trades.getUserHistory(authData['bearerToken']).then(data => {
-            console.log('getUserHistory response:', data);
-            if (data.success && data.data && data.data.data) {
-                const trades = Array.isArray(data.data.data) ? data.data.data : [];
-                setTradeHistory(trades);
+            if (data.success && data.data.data && data.data.data.length > 0) {
+                if (!data.data.data.isCreator) {
+                    const userItems = data.data.data.user_items;
+                    data.data.data.user_items = data.data.data.partner_items;
+                    data.data.data.user_items = userItems;
+                }
+                setTradeHistory(data.data.data);
                 setStats({
-                    itemsCount: data.data.total || trades.length,
+                    itemsCount: data.data.total,
                     tradeAmount: 0,
                 })
-                setIsHistoryLoaded(true);
             }
-        }).catch((error) => {
-            console.error('Error loading trade history:', error);
+            setIsHistoryLoaded(true);
+        }).catch(() => {
             setIsHistoryLoaded(true);
         })
-    }, [isHistoryLoaded, authData]);
+    }, [isHistoryLoaded]);
 
     return (
         <div className="w-full px-4 pt-8" style={{ paddingBottom: '120px' }}>
