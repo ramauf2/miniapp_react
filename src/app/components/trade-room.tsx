@@ -464,7 +464,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                             <Player
                                                 autoplay={true}
                                                 loop={true}
-                                                src={gift.img}
+                                                src={gift.animation}
                                                 style={{
                                                     width: '100%',
                                                     height: '100%',
@@ -485,7 +485,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                                     padding: '2px'
                                                 }}
                                             >
-                                                {gift.title}
+                                                {gift.title} #{gift.num}
                                             </div>
                                         </div>
                                     ))}
@@ -521,7 +521,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                             <Player
                                                 autoplay={true}
                                                 loop={true}
-                                                src={gift.img}
+                                                src={gift.animation}
                                                 style={{
                                                     width: `100px`,
                                                     height: `100px`,

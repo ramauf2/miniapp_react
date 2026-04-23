@@ -78,6 +78,7 @@ export function MyGifts({ onAddGifts, authData, lang }: MyGiftsProps) {
                     title: gift.title,
                     num: gift.num,
                     img: gift.img,
+                    animation: gift.animation,
                     status: gift.status,
                     collection: gift.collection,
                     price: gift.price,
@@ -205,7 +206,7 @@ export function MyGifts({ onAddGifts, authData, lang }: MyGiftsProps) {
                                 <Player
                                     autoplay={true}
                                     loop={true}
-                                    src={gift.img}
+                                    src={gift.animation}
                                     style={{ width: `100px`, height: `100px` }}
                                 />
                                 <h3 className="text-white text-[16px] font-medium mb-1">{gift.title} #{gift.num}</h3>
@@ -235,7 +236,7 @@ export function MyGifts({ onAddGifts, authData, lang }: MyGiftsProps) {
                                 <Player
                                     autoplay={true}
                                     loop={true}
-                                    src={gift.img}
+                                    src={gift.animation}
                                     style={{ width: `100px`, height: `100px` }}
                                 />
                                 <div className="flex-1">

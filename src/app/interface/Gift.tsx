@@ -12,6 +12,7 @@ export interface Gift {
     title: string,
     num: string,
     img: string,
+    animation: string,
     status: string,
     collection: string,
     price: any,

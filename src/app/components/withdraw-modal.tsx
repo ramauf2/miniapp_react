@@ -58,6 +58,7 @@ export function WithdrawModal({ onClose, authData, lang }: WithdrawModalProps) {
                     title: gift.title,
                     num: gift.num,
                     img: gift.img,
+                    animation: gift.animation,
                     attributes: gift.attributes,
                     attributes2: attributes,
                 });
@@ -129,7 +130,7 @@ export function WithdrawModal({ onClose, authData, lang }: WithdrawModalProps) {
                                 <Player
                                     autoplay={true}
                                     loop={true}
-                                    src={gift.img}
+                                    src={gift.animation}
                                     style={{ width: `100px`, height: `100px` }}
                                 />
 

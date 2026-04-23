@@ -80,7 +80,7 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGifts,
                                 <Player
                                     autoplay={true}
                                     loop={true}
-                                    src={gift.img}
+                                    src={gift.animation}
                                     style={{
                                         width: '60px',
                                         height: '60px',
@@ -92,7 +92,6 @@ export function GiftSelectorModal({ availableGifts, isOpen, onClose, onAddGifts,
                                 {/* Gift Info */}
                                 <div className="flex-1">
                                     <h3 className="text-white text-[16px] font-medium">{gift.title} #{gift.num}</h3>
-                                    <p className="text-[#999] text-[12px]">{gift.id}</p>
                                 </div>
                             </div>
                         ))}

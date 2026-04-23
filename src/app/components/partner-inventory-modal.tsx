@@ -52,7 +52,7 @@ export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onC
                                 <Player
                                     autoplay={true}
                                     loop={true}
-                                    src={gift.img}
+                                    src={gift.animation}
                                     style={{
                                         width: '60px',
                                         height: '60px',
@@ -64,7 +64,7 @@ export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onC
                                 {/* Gift Info */}
                                 <div className="flex-1">
                                     <h3 className="text-white text-[16px] font-medium">{gift.title}</h3>
-                                    <p className="text-[#999] text-[12px]">{gift.id}</p>
+                                    <p className="text-[#999] text-[12px]">#{gift.num}</p>
                                 </div>
                             </div>
                         ))}

@@ -7,6 +7,7 @@ interface GiftDetailModalProps {
         title: string;
         num: string;
         img: string;
+        animation: string;
         attributes2: {
             model: { name: string; rarity: string };
             pattern: { name: string; rarity: string };
@@ -34,7 +35,7 @@ export function GiftDetailModal({ gift, onClose, lang }: GiftDetailModalProps) {
                         <Player
                             autoplay={true}
                             loop={true}
-                            src={gift.img}
+                            src={gift.animation}
                             style={{
                                 width: '100%',
                                 height: '100%',
@@ -45,7 +46,6 @@ export function GiftDetailModal({ gift, onClose, lang }: GiftDetailModalProps) {
                         {/* Overlay with title and ID */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
                             <h2 className="text-white text-[18px] font-semibold text-center">{gift.title} #{gift.num}</h2>
-                            <p className="text-white text-[14px] text-center">#{gift.id}</p>
                         </div>
                     </div>
                 </div>
