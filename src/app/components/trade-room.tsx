@@ -140,6 +140,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
         setShowToast(true);
         setTimeout(() => {
             setShowToast(false);
+            window.location.reload();
         }, 3000);
     };
 
@@ -257,6 +258,8 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
             tons: tons !== undefined ? tons : selfTons,
             accept: accept ? 1 : 0,
         };
+
+        setIsSelfAccepted(accept);
         Trades.update(authData['bearerToken'], postData).then(data => {
             if (!data.success) {
                 if (silent) {
@@ -452,10 +455,10 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                         <div
                                             key={gift.id || index}
                                             onClick={() => {
-                                                if (isSelfAccepted) {
+                                                /*if (isSelfAccepted) {
                                                     setShowAlreadyAcceptedDialog(true);
                                                     return;
-                                                }
+                                                }*/
                                                 setGiftToDelete(gift);
                                                 setShowDeleteModal(true);
                                             }}
@@ -609,9 +612,9 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                         {lang.trade_room.accept_button}
                                     </button>
                                 ) : (
-                                    <div className="flex-1 bg-[rgba(108,108,108,0.7)] rounded-[25px] h-[55px] flex items-center justify-center">
-                                        <span className="text-white text-[16px] font-semibold">{lang.trade_room.trade_accepted}</span>
-                                    </div>
+                                    <button onClick={handleCancelTrade} className="flex-1 bg-[#303030] rounded-[25px] h-[55px] text-red-500 text-[18px] font-semibold">
+                                        {lang.trade_room.cancel_button}
+                                    </button>
                                 )}
 
                                 {/* Partner Status */}
@@ -627,8 +630,8 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                             </div>
 
                             {/* Cancel Trade Button - всегда показываем */}
-                            <button onClick={handleCancelTrade} className="w-full bg-[#303030] rounded-[25px] h-[55px] text-red-500 text-[18px] font-semibold">
-                                {lang.trade_room.cancel_button}
+                            <button onClick={goBack} className="w-full bg-[#303030] rounded-[25px] h-[55px] text-red-500 text-[18px] font-semibold">
+                                {lang.trade_room.back_button}
                             </button>
                         </>
                     )}

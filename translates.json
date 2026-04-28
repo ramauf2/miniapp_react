@@ -1,9 +1,9 @@
 {
   "ru":{
     "trade":{
-      "link_not_found":"Ссылка не существует или просрочена",
-      "link_already_used":"Ссылка использована другим партнером",
-      "link_not_exist":"Ссылка не существует",
+      "link_not_found":"Трейд не существует или просрочен",
+      "link_already_used":"Трейд использован другим партнером",
+      "link_not_exist":"Трейд не существует",
       "not_partner":"Вы не являетесь участником данного обмена",
       "already_completed":"Обмен уже был завершен",
       "creator_balance_error":"Не достаточно баланса у создателя обмена",
@@ -171,9 +171,9 @@
   },
   "en":{
     "trade":{
-      "link_not_found":"The link does not exist or has expired",
-      "link_already_used":"The link has been used by another partner",
-      "link_not_exist":"Link does not exist",
+      "link_not_found":"This trade does not exist or has expired",
+      "link_already_used":"This trade has been used by another partner",
+      "link_not_exist":"This trade does not exist",
       "not_partner":"You are not a participant in this exchange",
       "already_completed":"The exchange has already been completed",
       "creator_balance_error":"The exchange creator does not have enough balance",
