@@ -119,7 +119,7 @@ export function Profile({ authData, lang }: ProfileProps) {
                             <div className="flex items-center gap-3">
                                 <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
                                     {trade.user_items.map((item, index2) => (
-                                        <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
+                                        <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[8px]" />
                                     ))}
                                 </div>
                                 <div>
@@ -155,7 +155,7 @@ export function Profile({ authData, lang }: ProfileProps) {
                                 </div>
                                 <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
                                     {trade.partner_items.map((item, index2) => (
-                                        <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
+                                        <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[8px]" />
                                     ))}
                                 </div>
                             </div>

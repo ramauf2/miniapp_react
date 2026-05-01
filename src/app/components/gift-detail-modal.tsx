@@ -32,17 +32,19 @@ export function GiftDetailModal({ gift, onClose, lang }: GiftDetailModalProps) {
                 {/* Gift Image and Title */}
                 <div className="flex flex-col items-center mb-6">
                     <div className="w-[160px] h-[160px] rounded-[30px] overflow-hidden mb-4 relative">
-                        <Player
-                            autoplay={true}
-                            loop={true}
-                            src={gift.animation}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                pointerEvents: 'none'
-                            }}
-                        />
+                        <div style={{ borderRadius: '30px', overflow: 'hidden', width: '100%', height: '100%', clipPath: 'inset(0 round 30px)', WebkitClipPath: 'inset(0 round 30px)' }}>
+                            <Player
+                                autoplay={true}
+                                loop={true}
+                                src={gift.animation}
+                                className="lottie-rounded-30"
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    pointerEvents: 'none'
+                                }}
+                            />
+                        </div>
                         {/* Overlay with title and ID */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
                             <h2 className="text-white text-[18px] font-semibold text-center">{gift.title} #{gift.num}</h2>

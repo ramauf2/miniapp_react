@@ -49,17 +49,19 @@ export function PartnerInventoryModal({ partnerGifts, selectedGifts, isOpen, onC
                                 />
 
                                 {/* Gift Image */}
-                                <Player
-                                    autoplay={true}
-                                    loop={true}
-                                    src={gift.animation}
-                                    style={{
-                                        width: '60px',
-                                        height: '60px',
-                                        objectFit: 'cover',
-                                        pointerEvents: 'none'
-                                    }}
-                                />
+                                <div style={{ borderRadius: '10px', overflow: 'hidden', flexShrink: 0, clipPath: 'inset(0 round 10px)', WebkitClipPath: 'inset(0 round 10px)' }}>
+                                    <Player
+                                        autoplay={true}
+                                        loop={true}
+                                        src={gift.animation}
+                                        className="lottie-rounded-10"
+                                        style={{
+                                            width: '60px',
+                                            height: '60px',
+                                            pointerEvents: 'none'
+                                        }}
+                                    />
+                                </div>
 
                                 {/* Gift Info */}
                                 <div className="flex-1">

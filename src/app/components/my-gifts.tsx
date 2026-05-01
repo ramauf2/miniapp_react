@@ -203,12 +203,15 @@ export function MyGifts({ onAddGifts, authData, lang }: MyGiftsProps) {
                                     animationDelay: `${index * 0.025}s`
                                 }}
                             >
-                                <Player
-                                    autoplay={true}
-                                    loop={true}
-                                    src={gift.animation}
-                                    style={{ width: `100px`, height: `100px` }}
-                                />
+                                <div style={{ borderRadius: '15px', overflow: 'hidden', marginBottom: '8px', clipPath: 'inset(0 round 15px)', WebkitClipPath: 'inset(0 round 15px)', width: '100%', aspectRatio: '1' }}>
+                                    <Player
+                                        autoplay={true}
+                                        loop={true}
+                                        src={gift.animation}
+                                        className="lottie-rounded-15"
+                                        style={{ width: `100%`, height: `100%` }}
+                                    />
+                                </div>
                                 <h3 className="text-white text-[16px] font-medium mb-1">{gift.title} #{gift.num}</h3>
                                 <div className="flex items-center justify-between">
                                     <div>
@@ -233,12 +236,15 @@ export function MyGifts({ onAddGifts, authData, lang }: MyGiftsProps) {
                                     animationDelay: `${index * 0.03}s`
                                 }}
                             >
-                                <Player
-                                    autoplay={true}
-                                    loop={true}
-                                    src={gift.animation}
-                                    style={{ width: `100px`, height: `100px` }}
-                                />
+                                <div style={{ borderRadius: '12px', overflow: 'hidden', flexShrink: 0, clipPath: 'inset(0 round 12px)', WebkitClipPath: 'inset(0 round 12px)' }}>
+                                    <Player
+                                        autoplay={true}
+                                        loop={true}
+                                        src={gift.animation}
+                                        className="lottie-rounded-12"
+                                        style={{ width: `70px`, height: `70px` }}
+                                    />
+                                </div>
                                 <div className="flex-1">
                                     <h3 className="text-white text-[12px] font-medium">{gift.title} #{gift.num}</h3>
                                 </div>

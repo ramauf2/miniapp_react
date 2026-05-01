@@ -559,3 +559,52 @@ input, textarea {
     -ms-user-select: text;
     user-select: text;
 }
+
+/* Force border radius on Lottie Player elements using clip-path */
+.lottie-rounded-10 {
+    border-radius: 10px !important;
+    clip-path: inset(0 round 10px) !important;
+    -webkit-clip-path: inset(0 round 10px) !important;
+}
+
+.lottie-rounded-10 svg,
+.lottie-rounded-10 canvas,
+.lottie-rounded-10 > div {
+    border-radius: 10px !important;
+}
+
+.lottie-rounded-12 {
+    border-radius: 12px !important;
+    clip-path: inset(0 round 12px) !important;
+    -webkit-clip-path: inset(0 round 12px) !important;
+}
+
+.lottie-rounded-12 svg,
+.lottie-rounded-12 canvas,
+.lottie-rounded-12 > div {
+    border-radius: 12px !important;
+}
+
+.lottie-rounded-15 {
+    border-radius: 15px !important;
+    clip-path: inset(0 round 15px) !important;
+    -webkit-clip-path: inset(0 round 15px) !important;
+}
+
+.lottie-rounded-15 svg,
+.lottie-rounded-15 canvas,
+.lottie-rounded-15 > div {
+    border-radius: 15px !important;
+}
+
+.lottie-rounded-30 {
+    border-radius: 30px !important;
+    clip-path: inset(0 round 30px) !important;
+    -webkit-clip-path: inset(0 round 30px) !important;
+}
+
+.lottie-rounded-30 svg,
+.lottie-rounded-30 canvas,
+.lottie-rounded-30 > div {
+    border-radius: 30px !important;
+}

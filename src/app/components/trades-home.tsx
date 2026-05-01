@@ -1,7 +1,9 @@
 import {TradeHistory} from '../interface/TradeHistory';
 import {TradeData} from '../interface/TradeData';
 import {CreateTradeModal} from './create-trade-modal';
+import {TradeHistoryModal} from './trade-history-modal';
 import {getMockTradeIfNeeded} from '../mockData';
+import {useState} from 'react';
 // @ts-ignore
 import translates from '../../../translates';
 
@@ -23,6 +25,14 @@ interface TradesHomeProps {
 export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateTrade, tradeLink, showCreateTradeModal, setShowCreateTradeModal, message, lang }: TradesHomeProps) {
     // Используем мок данные только если нет реальных
     const displayTradeData = getMockTradeIfNeeded(tradeData);
+    
+    const [selectedTrade, setSelectedTrade] = useState<TradeHistory | null>(null);
+    const [showTradeHistoryModal, setShowTradeHistoryModal] = useState(false);
+
+    const handleTradeClick = (trade: TradeHistory) => {
+        setSelectedTrade(trade);
+        setShowTradeHistoryModal(true);
+    };
 
     return (
         <div className="h-full flex flex-col" style={{ height: 'calc(100vh - 56px)', overflow: 'hidden' }}>
@@ -128,7 +138,8 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                         style={{
                                             animationDelay: `${delay}s`
                                         }}
-                                        className="animate-trade-card"
+                                        className="animate-trade-card cursor-pointer"
+                                        onClick={() => handleTradeClick(trade)}
                                     >
                                         <div className="flex items-center justify-between mb-3">
                                             <span className="text-[#595959] text-[15px] font-semibold">{trade.created_at}</span>
@@ -136,12 +147,16 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                         </div>
 
                                         <div className="flex items-center justify-between">
-                                            {/* Your Gifts */}
+                                            {/* Your Gifts - показываем только первый подарок */}
                                             <div className="flex items-center gap-3">
-                                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
-                                                    {trade.user_items.map((item, index2) => (
-                                                        <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
-                                                    ))}
+                                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 flex items-center justify-center">
+                                                    {trade.user_items.length > 0 && (
+                                                        <img 
+                                                            src={trade.user_items[0].img} 
+                                                            alt={trade.user_items[0].title} 
+                                                            className="w-full h-full object-cover rounded-[8px]" 
+                                                        />
+                                                    )}
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <img
@@ -157,7 +172,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                             {/* Arrow */}
                                             <img src={imgTrade} alt="Trade" className="w-[39px] h-[39px] opacity-70" style={{ filter: 'brightness(0) invert(1)' }} />
 
-                                            {/* Their Gifts */}
+                                            {/* Their Gifts - показываем только первый подарок */}
                                             <div className="flex items-center gap-3">
                                                 <div className="flex items-center gap-2">
                                                     <img
@@ -168,10 +183,14 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                                     />
                                                     <span className="text-white text-[20px] font-semibold">{trade.partner_items.length}</span>
                                                 </div>
-                                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 grid grid-cols-2 gap-[2px]">
-                                                    {trade.partner_items.map((item, index2) => (
-                                                        <img src={item.img} alt={item.title} key={index2} className="w-full object-cover rounded-[5px]" />
-                                                    ))}
+                                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 flex items-center justify-center">
+                                                    {trade.partner_items.length > 0 && (
+                                                        <img 
+                                                            src={trade.partner_items[0].img} 
+                                                            alt={trade.partner_items[0].title} 
+                                                            className="w-full h-full object-cover rounded-[8px]" 
+                                                        />
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -193,6 +212,15 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                     onClose={() => setShowCreateTradeModal(false)}
                     handleCreateTrade={handleCreateTrade}
                     tradeLink={tradeLink}
+                />
+            )}
+
+            {showTradeHistoryModal && (
+                <TradeHistoryModal
+                    trade={selectedTrade}
+                    isOpen={showTradeHistoryModal}
+                    onClose={() => setShowTradeHistoryModal(false)}
+                    lang={lang}
                 />
             )}
         </div>

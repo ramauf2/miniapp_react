@@ -1,19 +1,19 @@
 import { Link } from 'lucide-react';
-import { BASE_PATH, BOT_NAME } from '../../../config';
+import { BOT_NAME } from '../../../config';
 import {useEffect, useState} from "react";
 import Referals from '../Referals';
 import {ReferalHistory} from '../interface/ReferalHistory';
 import {AuthData} from "../interface/AuthData.tsx";
-const imgPhoto = BASE_PATH + "/images/b40069be8827d28186f71205316130af8e40fdf6.png";
+const imgPhoto = "/images/b40069be8827d28186f71205316130af8e40fdf6.png";
 // @ts-ignore
 import translates from '../../../translates';
 
 interface ReferralsProps {
     authData: AuthData;
-    lang: any;
 }
 
-export function Referrals({ authData, lang }: ReferralsProps) {
+export function Referrals({ authData }: ReferralsProps) {
+    const lang = translates[localStorage.getItem('lang') ?? 'ru'];
     const [isReferalLoaded, setIsReferalLoaded] = useState(false);
     const [referalHistory, setReferalHistory] = useState<ReferalHistory[]>([]);
     const [referalCount, setReferalCount] = useState('0');
@@ -27,15 +27,29 @@ export function Referrals({ authData, lang }: ReferralsProps) {
     useEffect(() => {
         if (isReferalLoaded) return;
         Referals.getHistory(authData['bearerToken']).then(data => {
-            if (data.success) {
-                setReferalHistory(data.data.trades);
-                setIsReferalLoaded(true);
-                setTradesCount(data.data.tradesCount);
-                setReferalCount(data.data.referalsCount);
-                setTotalEarned((parseInt(data.data.totalAmount) / 1000000000).toFixed(2));
+            console.log('Referals.getHistory response:', data);
+            if (data.success && data.data) {
+                // Проверяем разные возможные структуры ответа
+                let trades = [];
+                if (data.data.trades && Array.isArray(data.data.trades)) {
+                    trades = data.data.trades;
+                } else if (data.data.data && Array.isArray(data.data.data)) {
+                    trades = data.data.data;
+                } else if (Array.isArray(data.data)) {
+                    trades = data.data;
+                }
+                
+                setReferalHistory(trades);
+                setTradesCount(String(data.data.tradesCount || data.data.total || trades.length));
+                setReferalCount(String(data.data.referalsCount || data.data.referrals || '0'));
+                setTotalEarned((parseInt(String(data.data.totalAmount || data.data.total_amount || '0')) / 1000000000).toFixed(2));
             }
+            setIsReferalLoaded(true);
+        }).catch((error) => {
+            console.error('Error loading referal history:', error);
+            setIsReferalLoaded(true);
         })
-    }, []);
+    }, [isReferalLoaded, authData]);
     const handleCopyLink = () => {
         navigator.clipboard.writeText(refLink);
     };
@@ -44,11 +58,11 @@ export function Referrals({ authData, lang }: ReferralsProps) {
         <div className="px-4 pt-8 pb-4">
             {/* User Info */}
             <div className="text-center mb-6">
-                <h1 className="text-white text-[48px] font-medium mb-4">Referrals</h1>
+                <h1 className="text-white text-[40px] font-medium mb-3">Referrals</h1>
                 <img
                     src={authData.avatar != '' ? authData.avatar : imgPhoto}
                     alt="Profile"
-                    className="w-[140px] h-[140px] rounded-full object-cover mx-auto mb-6"
+                    className="w-[70px] h-[70px] rounded-full object-cover mx-auto mb-4"
                 />
             </div>
 
