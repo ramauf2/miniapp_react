@@ -30,26 +30,19 @@ export function Referrals({ authData }: ReferralsProps) {
             console.log('Referals.getHistory response:', data);
             if (data.success && data.data) {
                 // Проверяем разные возможные структуры ответа
-                let trades = [];
-                if (data.data.trades && Array.isArray(data.data.trades)) {
-                    trades = data.data.trades;
-                } else if (data.data.data && Array.isArray(data.data.data)) {
-                    trades = data.data.data;
-                } else if (Array.isArray(data.data)) {
-                    trades = data.data;
-                }
-                
+                let trades = data.data.trades;
+
                 setReferalHistory(trades);
-                setTradesCount(String(data.data.tradesCount || data.data.total || trades.length));
-                setReferalCount(String(data.data.referalsCount || data.data.referrals || '0'));
-                setTotalEarned((parseInt(String(data.data.totalAmount || data.data.total_amount || '0')) / 1000000000).toFixed(2));
+                setTradesCount(String(data.data.tradesCount));
+                setReferalCount(String(data.data.referalsCount));
+                setTotalEarned((parseInt(String(data.data.totalAmount)) / 1000000000).toFixed(2));
             }
             setIsReferalLoaded(true);
         }).catch((error) => {
             console.error('Error loading referal history:', error);
             setIsReferalLoaded(true);
         })
-    }, [isReferalLoaded, authData]);
+    }, [isReferalLoaded]);
     const handleCopyLink = () => {
         navigator.clipboard.writeText(refLink);
     };
