@@ -7,7 +7,8 @@
       "not_partner":"Вы не являетесь участником данного обмена",
       "already_completed":"Обмен уже был завершен",
       "creator_balance_error":"Не достаточно баланса у создателя обмена",
-      "partner_balance_error":"Не достаточно баланса у акцептора обмена"
+      "partner_balance_error":"Не достаточно баланса у акцептора обмена",
+      "balance_error":"Не достаточно баланса для данной операции"
     },
     "user":{
       "cant_withdraw_gifts": "Подарки не доступны к выводу",
@@ -22,7 +23,8 @@
       "add_gift_2":"и отправь подарки",
       "write_button":"Написать",
       "exchange_success_1":"Обмен завершен",
-      "exchange_success_2":"Обмен успешно завершен"
+      "exchange_success_2":"Обмен успешно завершен",
+      "back_button":"Назад"
     },
     "balance":{
       "withdraw_error":"Ошибка при выводе",
@@ -153,7 +155,12 @@
       "already_accepted_title":"Обмен уже принят",
       "already_accepted_message":"Вы уже приняли обмен, нельзя удалять подарки",
       "completed_title":"Обмен завершен",
-      "completed_message":"Обмен успешно завершен"
+      "completed_message":"Обмен успешно завершен",
+      "abort_trade_button":"Завершить трейд",
+      "abort_dialog_title":"Завершить обмен?",
+      "abort_dialog_message":"Вы уверены, что хотите завершить этот обмен? Ссылка для обмена будет обновлена",
+      "abort_dialog_confirm":"Завершить",
+      "trade_fee_text":"Комиссия обмена: 1 TON"
     },
     "trades_home":{
       "live_trades":"Онлайн операции",
@@ -177,7 +184,8 @@
       "not_partner":"You are not a participant in this exchange",
       "already_completed":"The exchange has already been completed",
       "creator_balance_error":"The exchange creator does not have enough balance",
-      "partner_balance_error":"The exchange acceptor does not have sufficient balance"
+      "partner_balance_error":"The exchange acceptor does not have sufficient balance",
+      "balance_error":"There is not enough balance for this transaction"
     },
     "user":{
       "cant_withdraw_gifts": "Gifts are not available for withdrawal",
@@ -196,7 +204,8 @@
       "add_gift_2":"and send gifts",
       "write_button":"Write",
       "exchange_success_1":"Trade completed",
-      "exchange_success_2":"Trade completed successfully"
+      "exchange_success_2":"Trade completed successfully",
+      "back_button":"Back"
     },
     "balance":{
       "withdraw_error":"Withdraw error",
@@ -326,7 +335,12 @@
       "already_accepted_title":"Trade already accepted",
       "already_accepted_message":"You have already accepted the trade; gifts cannot be deleted.",
       "completed_title":"Trade completed",
-      "completed_message":"Trade completed successfully"
+      "completed_message":"Trade completed successfully",
+      "abort_trade_button":"Abort trade",
+      "abort_dialog_title":"Abort trade?",
+      "abort_dialog_message":"Are you sure you want to complete this exchange? The exchange link will be updated",
+      "abort_dialog_confirm":"Abort",
+      "trade_fee_text":"The trade fee is 1 TON"
     },
     "trades_home":{
       "live_trades":"Live Trades",

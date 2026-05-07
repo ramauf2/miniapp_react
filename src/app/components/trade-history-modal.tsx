@@ -20,6 +20,7 @@ export function TradeHistoryModal({ trade, isOpen, onClose }: TradeHistoryModalP
 
     const displayGifts = activeUser === 'user' ? trade.user_items : trade.partner_items;
 
+    console.log('displayGifts', displayGifts)
     return (
         <>
             {/* Backdrop */}
@@ -96,18 +97,18 @@ export function TradeHistoryModal({ trade, isOpen, onClose }: TradeHistoryModalP
                                     key={index}
                                     className="aspect-square rounded-[15px] overflow-hidden relative bg-[#303030]"
                                 >
-                                    <div style={{ 
-                                        borderRadius: '15px', 
-                                        overflow: 'hidden', 
-                                        width: '100%', 
-                                        height: '100%', 
-                                        clipPath: 'inset(0 round 15px)', 
-                                        WebkitClipPath: 'inset(0 round 15px)' 
+                                    <div style={{
+                                        borderRadius: '15px',
+                                        overflow: 'hidden',
+                                        width: '100%',
+                                        height: '100%',
+                                        clipPath: 'inset(0 round 15px)',
+                                        WebkitClipPath: 'inset(0 round 15px)'
                                     }}>
                                         <Player
                                             autoplay={true}
                                             loop={true}
-                                            src={gift.img}
+                                            src={gift.animation}
                                             className="lottie-rounded-15"
                                             style={{
                                                 width: '100%',

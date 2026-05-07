@@ -24,9 +24,10 @@ interface TradeRoomProps {
     tradeData: TradeData,
     goBack: () => void;
     lang: any;
+    localBalance: any;
 }
 
-export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoomProps) {
+export function TradeRoom({ socket, authData, tradeData, goBack, lang, localBalance}: TradeRoomProps) {
     const [partnerView, setPartnerView] = useState<'trade' | 'inventory'>('trade');
     const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
     const [isPartnerInventoryModalOpen, setIsPartnerInventoryModalOpen] = useState(false);
@@ -58,6 +59,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
     const [showAcceptDialog, setShowAcceptDialog] = useState(false);
     const [showAlreadyAcceptedDialog, setShowAlreadyAcceptedDialog] = useState(false);
     const [showTradeCompletedDialog, setShowTradeCompletedDialog] = useState(false);
+    const [showAbortDialog, setShowAbortDialog] = useState(false);
 
 
     useEffect(() => {
@@ -135,13 +137,19 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
     /**
      * Показать toast с ошибкой
      */
-    const showErrorToast = (message: string) => {
+    const showErrorToast = (message: string, reloadPage: boolean = false) => {
         setToastMessage(message);
         setShowToast(true);
+        if (reloadPage) {
+            setTimeout(() => {
+                setShowToast(false);
+                window.location.reload();
+            }, 3000);
+        }
         setTimeout(() => {
             setShowToast(false);
-            window.location.reload();
-        }, 3000);
+        }, 5000);
+
     };
 
     /**
@@ -167,11 +175,26 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
         //window.location.reload();
     };
 
+    const handleConfirmAbortTrade = () => {
+        setShowAbortDialog(false);
+        if (!authData) return;
+        Trades.create(authData['bearerToken']).then(() => {
+            window.location.reload();
+        });
+    };
+
     /**
      * Запрос подтверждения трейда
      */
     const handleAcceptTrade = () => {
         setShowAcceptDialog(true);
+    };
+
+    /**
+     * Запрос отмены трейда
+     */
+    const handleAbortTrade = () => {
+        setShowAbortDialog(true);
     };
 
     const handleConfirmAcceptTrade = () => {
@@ -282,7 +305,7 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
             }
         }).catch(() => {
             if (!silent) {
-                showErrorToast(lang.trade_room.error_network);
+                showErrorToast(lang.trade_room.error_network, true);
             }
         });
     }
@@ -477,21 +500,6 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                                     }}
                                                 />
                                             </div>
-                                            <div
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: 0,
-                                                    left: 0,
-                                                    right: 0,
-                                                    pointerEvents: 'none',
-                                                    color: '#ffe823',
-                                                    fontSize: '10px',
-                                                    textAlign: 'center',
-                                                    padding: '2px'
-                                                }}
-                                            >
-                                                {gift.title} #{gift.num}
-                                            </div>
                                         </div>
                                     ))}
                                     <button
@@ -585,9 +593,10 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                         className="bg-transparent text-white text-[20px] outline-none flex-1 placeholder-[#595959]"
                                         value={selfTons}
                                         onChange={(e) => {
-                                            const value = e.target.value;
+                                            let value = e.target.value;
                                             // Разрешаем только цифры и точку
                                             if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                                                if (parseFloat(value) > localBalance) value = localBalance;
                                                 setSelfTons(value);
                                             }
                                         }}
@@ -598,6 +607,10 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                                 )}
                                 <TonIcon size={16} className="ml-2" />
                             </div>
+                            <div style={{width: '100%', textAlign: 'right', fontSize: '13px', color: 'rgb(142, 142, 147)'}}>
+                                {lang.trade_room.trade_fee_text}
+                            </div>
+
                         </div>
                     </div>
 
@@ -634,8 +647,8 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                             </div>
 
                             {/* Cancel Trade Button - всегда показываем */}
-                            <button onClick={goBack} className="w-full bg-[#303030] rounded-[25px] h-[55px] text-red-500 text-[18px] font-semibold">
-                                {lang.trade_room.back_button}
+                            <button onClick={handleAbortTrade} className="w-full bg-[#303030] rounded-[25px] h-[55px] text-red-500 text-[18px] font-semibold">
+                                {lang.trade_room.abort_trade_button}
                             </button>
                         </>
                     )}
@@ -674,6 +687,18 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang}: TradeRoo
                     />
 
                     {/* Custom Dialogs */}
+                    <CustomDialog
+                        lang={lang}
+                        isOpen={showAbortDialog}
+                        title={lang.trade_room.abort_dialog_title}
+                        message={lang.trade_room.abort_dialog_message}
+                        type="confirm"
+                        confirmText={lang.trade_room.abort_dialog_confirm}
+                        cancelText={lang.trade_room.back_button}
+                        onConfirm={handleConfirmAbortTrade}
+                        onCancel={() => setShowAbortDialog(false)}
+                    />
+
                     <CustomDialog
                         lang={lang}
                         isOpen={showCancelDialog}

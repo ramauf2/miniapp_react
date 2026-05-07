@@ -2,6 +2,7 @@
 interface TradeItem {
     img: string,
     title: string,
+    animation: string,
 }
 
 export interface TradeHistory {

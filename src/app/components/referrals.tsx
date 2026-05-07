@@ -10,6 +10,7 @@ import translates from '../../../translates';
 
 interface ReferralsProps {
     authData: AuthData;
+    lang: any;
 }
 
 export function Referrals({ authData }: ReferralsProps) {

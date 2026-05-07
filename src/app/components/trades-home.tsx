@@ -25,7 +25,7 @@ interface TradesHomeProps {
 export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateTrade, tradeLink, showCreateTradeModal, setShowCreateTradeModal, message, lang }: TradesHomeProps) {
     // Используем мок данные только если нет реальных
     const displayTradeData = getMockTradeIfNeeded(tradeData);
-    
+
     const [selectedTrade, setSelectedTrade] = useState<TradeHistory | null>(null);
     const [showTradeHistoryModal, setShowTradeHistoryModal] = useState(false);
 
@@ -143,7 +143,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                     >
                                         <div className="flex items-center justify-between mb-3">
                                             <span className="text-[#595959] text-[15px] font-semibold">{trade.created_at}</span>
-                                            <span className="text-[#595959] text-[15px]">{trade.user + ' => ' + trade.partner}</span>
+                                            <span className="text-[#595959] text-[15px]">{/*trade.user + ' => ' + trade.partner*/}</span>
                                         </div>
 
                                         <div className="flex items-center justify-between">
@@ -151,10 +151,10 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                             <div className="flex items-center gap-3">
                                                 <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 flex items-center justify-center">
                                                     {trade.user_items.length > 0 && (
-                                                        <img 
-                                                            src={trade.user_items[0].img} 
-                                                            alt={trade.user_items[0].title} 
-                                                            className="w-full h-full object-cover rounded-[8px]" 
+                                                        <img
+                                                            src={trade.user_items[0].img}
+                                                            alt={trade.user_items[0].title}
+                                                            className="w-full h-full object-cover rounded-[8px]"
                                                         />
                                                     )}
                                                 </div>
@@ -185,10 +185,10 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                                 </div>
                                                 <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 flex items-center justify-center">
                                                     {trade.partner_items.length > 0 && (
-                                                        <img 
-                                                            src={trade.partner_items[0].img} 
-                                                            alt={trade.partner_items[0].title} 
-                                                            className="w-full h-full object-cover rounded-[8px]" 
+                                                        <img
+                                                            src={trade.partner_items[0].img}
+                                                            alt={trade.partner_items[0].title}
+                                                            className="w-full h-full object-cover rounded-[8px]"
                                                         />
                                                     )}
                                                 </div>

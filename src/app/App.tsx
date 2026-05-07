@@ -370,6 +370,7 @@ export default function App() {
                             socket={socketRef.current}
                             authData={authData}
                             tradeData={displayTradeData}
+                            localBalance={localBalance}
                             goBack={handleBackToTrades}
                         />
                     );
@@ -404,20 +405,22 @@ export default function App() {
 
         return null;
     };
+
     if (!lang) {
         return <></>
     }
 
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     return (
         <div className="relative w-full h-screen overflow-hidden" style={{ backgroundColor: '#111111', paddingTop: '40px' }}>
             <div className="max-w-[390px] h-full mx-auto relative">
                 <div className="h-[56px] flex items-center justify-between px-4 animate-fade-in" style={{ backgroundColor: '#111111', animationDelay: '0s', marginTop: '20px' }}>
-                    <div id="ton-connect"></div>
-
+                    <div id="ton-connect" style={{ display: (currentScreen === 'trade-room' ? 'none' : '')}}></div>
+                    {currentScreen === 'trade-room' && (
+                        <button onClick={handleBackToTrades} className="flex-1 bg-[#303030] rounded-[25px] text-red-500 text-[18px] font-semibold" style={{ height: '35px'}}>
+                            {lang.trade_room.back_button}
+                        </button>
+                    )}
+                    <div style={{ display: 'block', width: '100px'}}></div>
                     <div className="flex items-center gap-4">
                         <div
                             className="rounded-[35px] h-[34px] px-3 flex items-center gap-2"
