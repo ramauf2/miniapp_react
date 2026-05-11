@@ -32,7 +32,7 @@ export function TradeHistoryModal({ trade, isOpen, onClose }: TradeHistoryModalP
                 <div className="text-center mb-4">
                     <div className="flex items-center justify-between mb-2">
                         <span className="text-[#595959] text-[14px]">{trade.created_at}</span>
-                        <span className="text-[#595959] text-[14px]">{trade.user} ⇄ {trade.partner}</span>
+                        <span className="text-[#595959] text-[14px]">{/*trade.user} ⇄ {trade.partner*/}</span>
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@ export function TradeHistoryModal({ trade, isOpen, onClose }: TradeHistoryModalP
                                 activeUser === 'user' ? 'text-white' : 'text-[#B3B3B3]'
                             }`}
                         >
-                            {trade.user}
+                            {/*trade.user*/}creator
                         </button>
                         <button
                             onClick={() => handleUserClick('partner')}
@@ -82,7 +82,7 @@ export function TradeHistoryModal({ trade, isOpen, onClose }: TradeHistoryModalP
                                 activeUser === 'partner' ? 'text-white' : 'text-[#B3B3B3]'
                             }`}
                         >
-                            {trade.partner}
+                            {/*trade.partner*/}partner
                         </button>
                     </div>
                 </div>
@@ -130,7 +130,6 @@ export function TradeHistoryModal({ trade, isOpen, onClose }: TradeHistoryModalP
                                             padding: '2px'
                                         }}
                                     >
-                                        {gift.title}
                                     </div>
                                 </div>
                             ))}

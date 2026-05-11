@@ -6,6 +6,7 @@ import {getMockTradeIfNeeded} from '../mockData';
 import {useState} from 'react';
 // @ts-ignore
 import translates from '../../../translates';
+import {Player} from "@lottiefiles/react-lottie-player";
 
 const imgTrade = '/images/trade.png';
 
@@ -149,13 +150,21 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                         <div className="flex items-center justify-between">
                                             {/* Your Gifts - показываем только первый подарок */}
                                             <div className="flex items-center gap-3">
-                                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 flex items-center justify-center">
+                                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] flex items-center justify-center">
                                                     {trade.user_items.length > 0 && (
-                                                        <img
-                                                            src={trade.user_items[0].img}
-                                                            alt={trade.user_items[0].title}
-                                                            className="w-full h-full object-cover rounded-[8px]"
-                                                        />
+                                                        <div style={{ overflow: 'hidden', width: '100%', height: '100%'  }}>
+                                                            <Player
+                                                                autoplay={true}
+                                                                loop={true}
+                                                                src={trade.user_items[0].animation}
+                                                                className="lottie-rounded-10"
+                                                                style={{
+                                                                    width: '100%',
+                                                                    height: '100%',
+                                                                    pointerEvents: 'none'
+                                                                }}
+                                                            />
+                                                        </div>
                                                     )}
                                                 </div>
                                                 <div className="flex items-center gap-2">

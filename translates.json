@@ -1,5 +1,13 @@
 {
   "ru":{
+    "validator": {
+      "found_gift_message": "У пользователя {user} есть гифт для обмена",
+      "not_found": "По запросу {query} не найдено совпадений.",
+      "not_found_title": "Не найдено",
+      "search_min": "Необходимо минимум 3 символа для поиска.",
+      "start_trade_button": "Нажмите, чтобы начать обмен:",
+      "open_market_button": "Открыть обменник"
+    },
     "trade":{
       "link_not_found":"Трейд не существует или просрочен",
       "link_already_used":"Трейд использован другим партнером",
@@ -177,6 +185,14 @@
     }
   },
   "en":{
+    "validator": {
+      "found_gift_message": "User {user} has a gift to trade",
+      "not_found": "No matches found for {query}",
+      "not_found_title": "Not found",
+      "search_min": "A minimum of 3 characters is required to search",
+      "start_trade_button": "Click to start trade:",
+      "open_market_button": "Open exchanger"
+    },
     "trade":{
       "link_not_found":"This trade does not exist or has expired",
       "link_already_used":"This trade has been used by another partner",
