@@ -33,17 +33,22 @@ export function GiftDetailModal({ gift, onClose, lang }: GiftDetailModalProps) {
                 <div className="flex flex-col items-center mb-6">
                     <div className="w-[160px] h-[160px] rounded-[30px] overflow-hidden mb-4 relative">
                         <div style={{ borderRadius: '30px', overflow: 'hidden', width: '100%', height: '100%', clipPath: 'inset(0 round 30px)', WebkitClipPath: 'inset(0 round 30px)' }}>
-                            <Player
-                                autoplay={true}
-                                loop={true}
-                                src={gift.animation}
-                                className="lottie-rounded-30"
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    pointerEvents: 'none'
-                                }}
-                            />
+                            {gift.animation.indexOf('.json') >= 0 && (
+                                <Player
+                                    autoplay={true}
+                                    loop={true}
+                                    src={gift.animation}
+                                    className="lottie-rounded-30"
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        pointerEvents: 'none'
+                                    }}
+                                />
+                            )}
+                            {gift.animation.indexOf('.gif') >= 0 && (
+                                <img src={gift.animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                            )}
                         </div>
                         {/* Overlay with title and ID */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">

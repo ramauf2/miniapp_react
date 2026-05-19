@@ -488,17 +488,22 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang, localBala
                                             className="aspect-square rounded-[15px] cursor-pointer overflow-hidden relative"
                                         >
                                             <div style={{ borderRadius: '15px', overflow: 'hidden', width: '100%', height: '100%', clipPath: 'inset(0 round 15px)', WebkitClipPath: 'inset(0 round 15px)' }}>
-                                                <Player
-                                                    autoplay={true}
-                                                    loop={true}
-                                                    src={gift.animation}
-                                                    className="lottie-rounded-15"
-                                                    style={{
-                                                        width: '100%',
-                                                        height: '100%',
-                                                        pointerEvents: 'none'
-                                                    }}
-                                                />
+                                                {gift.animation.indexOf('.json') >= 0 && (
+                                                    <Player
+                                                        autoplay={true}
+                                                        loop={true}
+                                                        src={gift.animation}
+                                                        className="lottie-rounded-15"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '100%',
+                                                            pointerEvents: 'none'
+                                                        }}
+                                                    />
+                                                )}
+                                                {gift.animation.indexOf('.gif') >= 0 && (
+                                                    <img src={gift.animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                                )}
                                             </div>
                                         </div>
                                     ))}
@@ -532,16 +537,21 @@ export function TradeRoom({ socket, authData, tradeData, goBack, lang, localBala
                                             className="aspect-square rounded-[15px] overflow-hidden relative"
                                         >
                                             <div style={{ borderRadius: '15px', overflow: 'hidden', width: '100%', height: '100%', clipPath: 'inset(0 round 15px)', WebkitClipPath: 'inset(0 round 15px)' }}>
-                                                <Player
-                                                    autoplay={true}
-                                                    loop={true}
-                                                    src={gift.animation}
-                                                    className="lottie-rounded-15"
-                                                    style={{
-                                                        width: `100px`,
-                                                        height: `100px`
-                                                    }}
-                                                />
+                                                {gift.animation.indexOf('.json') >= 0 && (
+                                                    <Player
+                                                        autoplay={true}
+                                                        loop={true}
+                                                        src={gift.animation}
+                                                        className="lottie-rounded-15"
+                                                        style={{
+                                                            width: `100px`,
+                                                            height: `100px`
+                                                        }}
+                                                    />
+                                                )}
+                                                {gift.animation.indexOf('.gif') >= 0 && (
+                                                    <img src={gift.animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                                )}
                                             </div>
                                             <div
                                                 style={{

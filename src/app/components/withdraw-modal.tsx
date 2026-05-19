@@ -128,13 +128,18 @@ export function WithdrawModal({ onClose, authData, lang }: WithdrawModalProps) {
                                     style={{ filter: 'brightness(0) saturate(100%) invert(38%) sepia(98%) saturate(2618%) hue-rotate(200deg) brightness(102%) contrast(101%)' }}
                                 />
                                 <div style={{ borderRadius: '15px', overflow: 'hidden', flexShrink: 0, clipPath: 'inset(0 round 15px)', WebkitClipPath: 'inset(0 round 15px)' }}>
-                                    <Player
-                                        autoplay={true}
-                                        loop={true}
-                                        src={gift.animation}
-                                        className="lottie-rounded-15"
-                                        style={{ width: `100px`, height: `100px` }}
-                                    />
+                                    {gift.animation.indexOf('.json') >= 0 && (
+                                        <Player
+                                            autoplay={true}
+                                            loop={true}
+                                            src={gift.animation}
+                                            className="lottie-rounded-15"
+                                            style={{ width: `100px`, height: `100px` }}
+                                        />
+                                    )}
+                                    {gift.animation.indexOf('.gif') >= 0 && (
+                                        <img src={gift.animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                    )}
                                 </div>
 
                                 <div className="flex-1">
