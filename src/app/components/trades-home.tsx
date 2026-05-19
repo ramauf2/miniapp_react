@@ -167,7 +167,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                                                 />
                                                             )}
                                                             {trade.user_items[0].animation.indexOf('.gif') >= 0 && (
-                                                                <img src={trade.user_items[0].animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                                                <img src={trade.user_items[0].animation} className="lottie-rounded-10" style={{width: '100%', height: '100%', pointerEvents: 'none' }} />
                                                             )}
                                                         </div>
                                                     )}
@@ -214,7 +214,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                                                 />
                                                             )}
                                                             {trade.partner_items[0].animation.indexOf('.gif') >= 0 && (
-                                                                <img src={trade.partner_items[0].animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                                                <img src={trade.partner_items[0].animation} className="lottie-rounded-10" style={{width: '100%', height: '100%', pointerEvents: 'none' }} />
                                                             )}
                                                         </div>
                                                     )}

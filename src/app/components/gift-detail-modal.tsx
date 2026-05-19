@@ -47,7 +47,7 @@ export function GiftDetailModal({ gift, onClose, lang }: GiftDetailModalProps) {
                                 />
                             )}
                             {gift.animation.indexOf('.gif') >= 0 && (
-                                <img src={gift.animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                <img src={gift.animation} className="lottie-rounded-30" style={{width: '100%', height: '100%', pointerEvents: 'none' }} />
                             )}
                         </div>
                         {/* Overlay with title and ID */}

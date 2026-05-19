@@ -119,7 +119,7 @@ export function TradeHistoryModal({ trade, isOpen, onClose }: TradeHistoryModalP
                                             />
                                         )}
                                         {gift.animation.indexOf('.gif') >= 0 && (
-                                            <img src={gift.animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                            <img src={gift.animation} className="lottie-rounded-15" style={{width: '100%', height: '100%', pointerEvents: 'none' }} />
                                         )}
                                     </div>
                                     <div

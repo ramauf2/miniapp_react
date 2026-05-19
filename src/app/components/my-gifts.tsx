@@ -214,7 +214,7 @@ export function MyGifts({ onAddGifts, authData, lang }: MyGiftsProps) {
                                         />
                                     )}
                                     {gift.animation.indexOf('.gif') >= 0 && (
-                                        <img src={gift.animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                        <img src={gift.animation} className="lottie-rounded-15" style={{width: '100%', height: '100%'}} />
                                     )}
                                 </div>
                                 <h3 className="text-white text-[16px] font-medium mb-1">{gift.title} #{gift.num}</h3>
@@ -252,7 +252,7 @@ export function MyGifts({ onAddGifts, authData, lang }: MyGiftsProps) {
                                         />
                                     )}
                                     {gift.animation.indexOf('.gif') >= 0 && (
-                                        <img src={gift.animation} className="lottie-rounded-10" style={{width: '60px', height: '60px', pointerEvents: 'none' }} />
+                                        <img src={gift.animation} className="lottie-rounded-12" style={{width: '70px', height: '70px'}} />
                                     )}
                                 </div>
                                 <div className="flex-1">
