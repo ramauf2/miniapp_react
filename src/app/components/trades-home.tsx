@@ -18,12 +18,12 @@ interface TradesHomeProps {
     tradeLink: string | null;
     showCreateTradeModal: boolean;
     setShowCreateTradeModal: (show: boolean) => void;
-    message: string | null;
+    error: string | null;
     lang: any;
 }
 
 
-export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateTrade, tradeLink, showCreateTradeModal, setShowCreateTradeModal, message, lang }: TradesHomeProps) {
+export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateTrade, tradeLink, showCreateTradeModal, setShowCreateTradeModal, error, lang }: TradesHomeProps) {
     // Используем мок данные только если нет реальных
     const displayTradeData = getMockTradeIfNeeded(tradeData);
     
@@ -35,11 +35,15 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
         setShowTradeHistoryModal(true);
     };
 
+    const onResetLink = () => {
+        window.location.href = '/';
+    }
+
     return (
         <div className="h-full flex flex-col" style={{ height: 'calc(100vh - 56px)', overflow: 'hidden' }}>
             {/* Fixed Header Section */}
             <div className="px-4 pt-4 flex-shrink-0" style={{ flexShrink: 0 }}>
-                {displayTradeData && displayTradeData.partner ? (
+                {displayTradeData && displayTradeData.partner && error === null ? (
                     <div
                         className="bg-[#303030] rounded-[20px] p-4 flex items-center justify-between mb-6 animate-quick-fade"
                         style={{
@@ -57,7 +61,30 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                             className="bg-[#007AFF] rounded-full px-6 py-2 text-white text-[16px] font-semibold hover:brightness-110 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(0,0,0,0.3)]"
                             style={{ borderTop: '1.5px solid rgba(255, 255, 255, 0.15)', borderBottom: '1.5px solid rgba(0, 0, 0, 0.2)' }}
                         >
-                            Open
+                            {lang.trades_home.open_button}
+                        </button>
+                    </div>
+                ) : ''}
+
+                {error ? (
+                    <div
+                        className="bg-[#303030] rounded-[20px] p-4 flex items-center justify-between mb-6 animate-quick-fade"
+                        style={{
+                            borderTop: '1.5px solid rgba(255, 255, 255, 0.12)',
+                            animationDelay: '0s'
+                        }}
+                    >
+                        <div className="flex items-center gap-2">
+                            <img src="/images/trade.png" alt="trade" className="w-6 h-6" style={{ filter: 'brightness(0) saturate(100%) invert(80%)' }} />
+                            <div className="w-[12px] h-[12px] rounded-full bg-[#00A61E]" />
+                            <span className="text-white text-[18px]">{error}</span>
+                        </div>
+                        <button
+                            onClick={onResetLink}
+                            className="bg-[#007AFF] rounded-full px-6 py-2 text-white text-[16px] font-semibold hover:brightness-110 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(0,0,0,0.3)]"
+                            style={{ borderTop: '1.5px solid rgba(255, 255, 255, 0.15)', borderBottom: '1.5px solid rgba(0, 0, 0, 0.2)' }}
+                        >
+                            {lang.trades_home.close_button}
                         </button>
                     </div>
                 ) : ''}
@@ -70,16 +97,6 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                     }}
                 >
                 </div>*/}
-
-                {message && (<div
-                    className="bg-[#3A3A3A] rounded-[20px] mb-4 animate-quick-fade"
-                    style={{
-                        animationDelay: displayTradeData && displayTradeData.partner ? '0.05s' : '0s',
-                        padding: '20px',
-                    }}
-                >
-                    {message}
-                </div>)}
 
 
                 {/* Live Trades Header */}
@@ -197,7 +214,7 @@ export function TradesHome({ tradeData, tradeHistory, onOpenTrade, handleCreateT
                                                     />
                                                     <span className="text-white text-[20px] font-semibold">{trade.partner_items.length}</span>
                                                 </div>
-                                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] p-1 flex items-center justify-center">
+                                                <div className="bg-[#303030] rounded-[10px] w-[70px] h-[70px] flex items-center justify-center">
                                                     {trade.partner_items.length > 0 && (
                                                         <div style={{ overflow: 'hidden', width: '100%', height: '100%'  }}>
                                                             {trade.partner_items[0].animation.indexOf('.json') >= 0 && (

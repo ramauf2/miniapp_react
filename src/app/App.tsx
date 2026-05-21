@@ -41,7 +41,7 @@ export default function App() {
     const [localBalance, setLocalBalance] = useState(0);
     const [tradeData, setTradeData] = useState<TradeData | null>(null);
     const [tradeLink, setTradeLink] = useState<string | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
     const [ui, setUi] = useState<any>(null);
     const [tradeHistory, setTradeHistory] = useState<TradeHistory[]>([]);
     const [modalConfig] = useState<{
@@ -205,7 +205,7 @@ export default function App() {
                         });
                         setTradeData(data.data);
                     } else {
-                        setMessage(data.data);
+                        setError(data.data);
                     }
                 });
             }
@@ -387,7 +387,7 @@ export default function App() {
                     tradeLink={tradeLink}
                     showCreateTradeModal={showCreateTradeModal}
                     setShowCreateTradeModal={setShowCreateTradeModal}
-                    message={message}
+                    error={error}
                 />
             );
         }
